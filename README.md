@@ -1,4 +1,4 @@
-# 📡 JOB RADAR (CAREER X-RAY)
+# 📡 CAREER X-RAY
 
 > **Decode the JD. Unmask the trap.**  
 > *An Interactive Web-App Educational Toolkit for Job Scam & Botnet Seeding Detection (UNESCO MIL Project).*
