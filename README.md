@@ -77,3 +77,52 @@ job-radar/
 │   └── server.js               # Express Server Setup & Listener
 │
 └── README.md                   # Project Documentation
+
+
+🚀 Local Installation & Setup Guide
+Prerequisites
+Node.js >= 18.x
+
+npm >= 9.x
+
+Google Gemini API Key (Obtain a free key at Google AI Studio)
+
+1. Clone Repository
+Bash
+git clone [https://github.com/](https://github.com/)<your-username>/job-radar.git
+cd job-radar
+2. Setup Backend (Express Server)
+Bash
+cd backend
+npm install
+Create a .env file inside the backend/ directory:
+
+Đoạn mã
+PORT=5000
+GEMINI_API_KEY=your_google_gemini_api_key_here
+Start the Backend Server:
+
+Bash
+node server.js
+Server will run at: http://localhost:5000
+
+3. Setup Frontend (React + Vite)
+Open a new Terminal window:
+
+Bash
+cd job-radar/frontend
+npm install
+Start the Frontend Development Server:
+
+Bash
+npm run dev
+React Application will run at: http://localhost:5173
+
+⚡ Development Roadmap (9-Day Rapid Sprint)
+[x] Phase 1 (Aug 5 - Aug 6): Initialized repository, designed Full-Stack REST API architecture & gathered 3 case study datasets.
+
+[ ] Phase 2 (Aug 7 - Aug 9): Develop React Components, integrate Tailwind CSS & connect @google/genai SDK (Gemini 2.5 Flash).
+
+[ ] Phase 3 (Aug 10 - Aug 11): Implement Dual-Mode Fallback, optimize UI/UX animations & finalize UNESCO-aligned Pitch Deck.
+
+[ ] Phase 4 (Aug 12 - Aug 13): Record 3-minute video pitch, perform system QA testing & submit final deliverables ahead of August 14 deadline.
