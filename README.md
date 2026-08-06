@@ -81,9 +81,9 @@ job-radar/
 
 🚀 Local Installation & Setup Guide
 Prerequisites
-Node.js >= 18.x
+## Node.js >= 18.x
 
-npm >= 9.x
+## npm >= 9.x
 
 Google Gemini API Key (Obtain a free key at Google AI Studio)
 
