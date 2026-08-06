@@ -65,16 +65,35 @@ job-radar/
 │   ├── tailwind.config.js
 │   └── vite.config.js
 │
-├── backend/                    # Node.js + Express REST API (Server)
-│   ├── controllers/
-│   │   └── scanController.js   # Gemini 2.5 Flash Integration & Fallback Logic
-│   ├── data/
-│   │   └── jobs.json           # Local Mock DB & Fail-safe Backup Data
-│   ├── routes/
-│   │   └── scanRoutes.js       # REST Endpoints (/api/scan/jd, /api/scan/comments)
-│   ├── .env.example            # Environment variables template
-│   ├── package.json
-│   └── server.js               # Express Server Setup & Listener
+backend/
+├── config/                 # Environment Configuration & System Connections
+│   ├── db.js               # MongoDB connection setup (Mongoose)
+│   └── gemini.js           # Google Gen AI SDK client initialization
+│
+├── middleware/             # Request/Response Middleware Handlers
+│   ├── errorHandler.js     # Centralized error handling middleware
+│   └── rateLimiter.js      # API rate limiting & anti-spam (optional)
+│
+├── routes/                 # API Endpoint Routers
+│   └── scanRoutes.js       # Express routes for /api/scan/* endpoints
+│
+├── controllers/            # HTTP Request & Response Handlers
+│   └── scanController.js   # Receives req.body, invokes Services, returns JSON responses
+│
+├── services/               # Core Business Logic & AI Integrations
+│   ├── geminiService.js    # Gemini 2.5 API integration & Prompt Engineering logic
+│   └── fallbackService.js  # Fail-safe logic reading jobs.json / MongoDB on failures
+│
+├── utils/                  # Helper & Utility Functions
+│   ├── jsonReader.js       # Safe JSON file reading utility
+│   └── logger.js           # Custom console logging utility
+│
+├── data/
+│   └── jobs.json           # Local Fallback Dataset
+│
+├── .env
+├── package.json
+└── server.js               # Main Entry Point (Registers Middlewares & Routes)    
 │
 └── README.md                   # Project Documentation
 
