@@ -88,21 +88,22 @@ Prerequisites
 Google Gemini API Key (Obtain a free key at Google AI Studio)
 
 1. Clone Repository
-Bash
+
 git clone [https://github.com/](https://github.com/)<your-username>/job-radar.git
 cd job-radar
 2. Setup Backend (Express Server)
+
 Bash
 cd backend
 npm install
 Create a .env file inside the backend/ directory:
 
-Đoạn mã
+
 PORT=5000
 GEMINI_API_KEY=your_google_gemini_api_key_here
 Start the Backend Server:
 
-Bash
+
 node server.js
 Server will run at: http://localhost:5000
 
