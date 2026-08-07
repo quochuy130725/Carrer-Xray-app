@@ -1,0 +1,50 @@
+[
+  {
+    "id": "job-001",
+    "title": "Thực Tập Sinh Content Marketing (Thu Nhập Đến 20M)",
+    "company": "Công Ty TNHH Truyền Thông X",
+    "time": "2 giờ trước",
+    "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=HR_Alex",
+    "jdText": "Công ty cần tuyển 5 bạn TTS Content Marketing. Lương cứng 5 triệu + KPI hoa hồng lên đến 20 triệu/tháng. Yêu cầu: Nộp phí giữ chỗ thiết bị 500k (hoàn lại sau 1 tháng). Chi tiết liên hệ Telegram @hr_manager_x.",
+    "marketBenchmark": "Bộ Luật Lao Động cấm thu bất kỳ khoản phí nào khi tuyển dụng. Mức lương TTS Marketing chuẩn thị trường dao động từ 2 - 5 triệu.",
+    "redFlags": [
+      {
+        "phrase": "Nộp phí giữ chỗ thiết bị 500k",
+        "reason": "Bẫy lừa cọc tài chính trước khi nhận việc.",
+        "category": "Upfront Fee Scam"
+      },
+      {
+        "phrase": "Thu Nhập Đến 20M",
+        "reason": "KPI ảo không thực tế cho vị trí thực tập sinh.",
+        "category": "Unrealistic KPI"
+      },
+      {
+        "phrase": "Telegram @hr_manager_x",
+        "reason": "Dấu hiệu ẩn danh, tránh bị truy vết trên nền tảng chính thức.",
+        "category": "Anonymous Contact"
+      }
+    ],
+    "comments": [
+      {
+        "id": "c1",
+        "userName": "Minh Anh",
+        "text": "Em vừa nhận lương 18tr tháng đầu nè mọi người ơi, môi trường xịn lắm!",
+        "isBot": true,
+        "botReason": "Fake Social Proof — Seeding tạo niềm tin ảo bằng con số phi thực tế."
+      },
+      {
+        "id": "c2",
+        "userName": "Tuấn Kiệt",
+        "text": "Ib em với ạ, em chuyển cọc 500k rồi thì làm gì tiếp theo ạ?",
+        "isBot": false
+      },
+      {
+        "id": "c3",
+        "userName": "Hoàng Nam",
+        "text": "Cơ hội tốt quá, ứng tuyển gấp kẻo hết slot mn ơi!",
+        "isBot": true,
+        "botReason": "Urgency Bait — Tạo cảm giác khan hiếm giả lập thúc ép cọc tiền."
+      }
+    ]
+  }
+]

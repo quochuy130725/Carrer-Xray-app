@@ -66,12 +66,31 @@ job-radar/
 │   └── vite.config.js
 │
 ├── backend/                    # Node.js + Express REST API (Server)
-│   ├── controllers/
-│   │   └── scanController.js   # Gemini 2.5 Flash Integration & Fallback Logic
-│   ├── data/
-│   │   └── jobs.json           # Local Mock DB & Fail-safe Backup Data
+│   ├── config/
+│   │   ├── db.js               # MongoDB connection & Mongoose setup
+│   │   └── gemini.js           # Gemini 2.5 Flash SDK initialization
+│   │
+│   ├── middleware/
+│   │   ├── errorHandler.js     # Global Error Handler
+│   │   └── rateLimiter.js      # Request rate limiting (Optional)
+│   │
 │   ├── routes/
 │   │   └── scanRoutes.js       # REST Endpoints (/api/scan/jd, /api/scan/comments)
+│   │
+│   ├── controllers/
+│   │   └── scanController.js   # Orchestrates Gemini Service & Fallback Service
+│   │
+│   ├── services/
+│   │   ├── geminiService.js    # Business Logic & Prompt Engineering for Gemini API
+│   │   └── fallbackService.js  # FAIL-SAFE mechanism (reads jobs.json & MongoDB)
+│   │
+│   ├── utils/
+│   │   ├── jsonReader.js       # Safe JSON file reading helper
+│   │   └── logger.js           # Custom logger utility
+│   │
+│   ├── data/
+│   │   └── jobs.json           # Local Mock DB & Pre-labeled Fallback Data
+│   │
 │   ├── .env.example            # Environment variables template
 │   ├── package.json
 │   └── server.js               # Express Server Setup & Listener
@@ -119,11 +138,4 @@ Bash
 npm run dev
 React Application will run at: http://localhost:5173
 
-⚡ Development Roadmap (9-Day Rapid Sprint)
-[x] Phase 1 (Aug 5 - Aug 6): Initialized repository, designed Full-Stack REST API architecture & gathered 3 case study datasets.
 
-[ ] Phase 2 (Aug 7 - Aug 9): Develop React Components, integrate Tailwind CSS & connect @google/genai SDK (Gemini 2.5 Flash).
-
-[ ] Phase 3 (Aug 10 - Aug 11): Implement Dual-Mode Fallback, optimize UI/UX animations & finalize UNESCO-aligned Pitch Deck.
-
-[ ] Phase 4 (Aug 12 - Aug 13): Record 3-minute video pitch, perform system QA testing & submit final deliverables ahead of August 14 deadline.
