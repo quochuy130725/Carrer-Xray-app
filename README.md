@@ -67,33 +67,33 @@ job-radar/
 │
 ├── backend/                    # Node.js + Express REST API (Server)
 │   ├── config/
-│   │   ├── db.js               # MongoDB connection & Mongoose setup
-│   │   └── gemini.js           # Gemini 2.5 Flash SDK initialization
+│   │   ├── db.js               # MongoDB connection setup (Mongoose)
+│   │   └── gemini.js           # Google Gen AI SDK client initialization
 │   │
 │   ├── middleware/
-│   │   ├── errorHandler.js     # Global Error Handler
-│   │   └── rateLimiter.js      # Request rate limiting (Optional)
+│   │   ├── errorHandler.js     # Centralized error handling middleware
+│   │   └── rateLimiter.js      # API rate limiting & anti-spam (optional)
 │   │
 │   ├── routes/
-│   │   └── scanRoutes.js       # REST Endpoints (/api/scan/jd, /api/scan/comments)
+│   │   └── scanRoutes.js       # Express routes for /api/scan/* endpoints
 │   │
 │   ├── controllers/
-│   │   └── scanController.js   # Orchestrates Gemini Service & Fallback Service
+│   │   └── scanController.js   # Receives req.body, invokes Services, returns JSON responses
 │   │
 │   ├── services/
-│   │   ├── geminiService.js    # Business Logic & Prompt Engineering for Gemini API
-│   │   └── fallbackService.js  # FAIL-SAFE mechanism (reads jobs.json & MongoDB)
+│   │   ├── geminiService.js    # Gemini 2.5 API integration & Prompt Engineering logic
+│   │   └── fallbackService.js  # Fail-safe logic reading jobs.json / MongoDB on failures
 │   │
 │   ├── utils/
-│   │   ├── jsonReader.js       # Safe JSON file reading helper
-│   │   └── logger.js           # Custom logger utility
+│   │   ├── jsonReader.js       # Safe JSON file reading utility
+│   │   └── logger.js           # Custom console logging utility
 │   │
 │   ├── data/
-│   │   └── jobs.json           # Local Mock DB & Pre-labeled Fallback Data
+│   │   └── jobs.json           # Local Fallback Dataset
 │   │
-│   ├── .env.example            # Environment variables template
+│   ├── .env
 │   ├── package.json
-│   └── server.js               # Express Server Setup & Listener
+│   └── server.js               # Main Entry Point (Registers Middlewares & Routes)
 │
 └── README.md                   # Project Documentation
 
