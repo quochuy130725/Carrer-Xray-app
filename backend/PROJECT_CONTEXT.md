@@ -1,123 +1,154 @@
 # 📡 BACKEND CONTEXT & AI CODING INSTRUCTIONS: CAREER X-RAY
 
-> File này chứa toàn bộ quy chuẩn kiến trúc, tích hợp AI và cơ chế Fallback của **CAREER X-RAY Backend** dành cho AI Coding Assistant (Cursor, Antigravity, Windsurf).
+> File này chứa toàn bộ quy chuẩn kiến trúc, mạch xử lý API & Database, Engine bóc tách Red Flags, ghi nhận Audit Log và cơ chế Fallback của **CAREER X-RAY Backend** dành cho AI Coding Assistant (Cursor, Antigravity, Windsurf).
 
 ---
 
 ## 1. BACKEND OVERVIEW & STACK SPECIFICATION
+
 * **Runtime:** Node.js (>= 18.x)
 * **Framework:** Express.js (RESTful API Architecture)
-* **AI Core Engine:** Google Gemini 2.5 Flash API (`gemini-2.5-flash`)
+* **AI Core Engine:** Google Gemini 2.5 Flash API (`gemini-2.5-flash`) + Custom Regex Pattern Matching Engine
 * **AI SDK:** Official `@google/genai` SDK
-* **Middleware:** `cors`, `express.json()`, `dotenv`
-* **Data Layer:** Local JSON File (`data/jobs.json`) serving as Mock DB and Fail-safe Fallback Storage.
+* **Database & Persistence:** MongoDB Atlas (Mongoose ORM) + Local JSON (`data/jobs.json`) làm lớp dự phòng (Fail-safe Fallback).
+* **Collections:**
+  - `jobs`: Lưu giữ các Case Studies mẫu được xác thực và gán nhãn chuyên sâu.
+  - `scanned_jobs`: Lưu giữ Audit Log các bài đăng tùy chỉnh do người dùng gửi phân tích qua module Inspector.
+* **Middleware:** `cors`, `express.json()`, `dotenv`, `errorHandler`
 
 ---
 
 ## 2. PROJECT STRUCTURE
+
 ```text
 backend/
 ├── config/                 # Environment Configuration & System Connections
-│   ├── db.js               # MongoDB connection setup (Mongoose)
-│   └── gemini.js           # Google Gen AI SDK client initialization
+│   ├── db.js               # MongoDB Atlas connection setup (Mongoose)
+│   └── gemini.js           # Google Gen AI SDK client & helper config
 │
 ├── middleware/             # Request/Response Middleware Handlers
 │   ├── errorHandler.js     # Centralized error handling middleware
-│   └── rateLimiter.js      # API rate limiting & anti-spam (optional)
+│   └── rateLimiter.js      # API rate limiting & anti-spam middleware
 │
 ├── routes/                 # API Endpoint Routers
-│   └── scanRoutes.js       # Express routes for /api/scan/* endpoints
+│   └── scanRoutes.js       # Express routes (/api/cases, /api/analyze, /api/scan/*)
 │
 ├── controllers/            # HTTP Request & Response Handlers
-│   └── scanController.js   # Receives req.body, invokes Services, returns JSON responses
+│   └── scanController.js   # Receives req.body, invokes Services, handles audit logging
 │
 ├── services/               # Core Business Logic & AI Integrations
 │   ├── geminiService.js    # Gemini 2.5 API integration & Prompt Engineering logic
-│   └── fallbackService.js  # Fail-safe logic reading jobs.json / MongoDB on failures
+│   ├── regexService.js     # Pattern matching detection engine (Upfront fees, Telegram, Zalo)
+│   └── fallbackService.js  # Fail-safe fallback logic reading jobs.json / MongoDB
 │
 ├── utils/                  # Helper & Utility Functions
-│   ├── jsonReader.js       # Safe JSON file reading utility
-│   └── logger.js           # Custom console logging utility
+│   ├── jsonReader.js       # Safe JSON file reading helper
+│   └── logger.js           # Custom logger utility
+│
+├── models/                 # Mongoose Data Schemas
+│   ├── Job.js              # Job, RedFlag & Comment Mongoose Schema
+│   └── ScannedJob.js       # Audit Log Schema for /api/analyze queries
+│
+├── scripts/                # Database Utilities & Automation
+│   └── seed.js             # Automated dataset seeder (npm run seed)
 │
 ├── data/
-│   └── jobs.json           # Local Fallback Dataset
+│   └── jobs.json           # Local Nested Fallback Dataset (Case Studies & Job Posts)
 │
-├── .env
-├── package.json
-└── server.js               # Main Entry Point (Registers Middlewares & Routes)           # Express Server Setup & Middlewares
+├── .env                    # Environment variables (PORT, GEMINI_API_KEY, MONGO_URI)
+├── package.json            # Dependencies & Scripts (start, dev, seed)
+└── server.js               # Main Entry Point (Registers Middlewares, Routes & DB Connection)
+```
 
-3. REST API SPECIFICATION
-A. GET /api/health
-Description: Health check endpoint to verify server status.
+---
 
-Response (200 OK):
+## 3. MẠCH XỬ LÝ API VÀ DATABASE CHI TIẾT
 
-JSON
-{ "status": "CAREER X-RAY Server Ready" }
-B. POST /api/scan/jd
-Description: Analyzes raw job description text to detect manipulative terms and Red Flags.
+### 🔄 1. Mạch Xử Lý `GET /api/cases` (Lấy dữ liệu Case Studies từ MongoDB Atlas)
 
-Request Body:
+```text
+[ CLIENT (REACT) ] ──────► GET /api/cases ──────► [ EXPRESS ROUTER ]
+                                                           │
+                                                           ▼
+                                                [ scanController.getCases ]
+                                                           │
+                                      ┌────────────────────┴────────────────────┐
+                                      │                                         │
+                             [ MONGO ATLAS CONNECTED? ]                 [ OFFLINE / FALLBACK ]
+                                      │                                         │
+                                   (YES)                                      (NO)
+                                      ▼                                         ▼
+                            `Job.find({}).lean()`                      Read `data/jobs.json`
+                                      │                                         │
+                                      └────────────────────┬────────────────────┘
+                                                           │
+                                                           ▼
+                                                Group into 5 Case Categories
+                                                           │
+                                                           ▼
+                                               [ Return 200 JSON Response ]
+```
 
-JSON
-{
-  "jobId": "job-001",
-  "jdText": "Tuyển thực tập sinh thu nhập 20 triệu/tháng, đóng phí giữ chỗ 500k..."
-}
-Success Response (LIVE AI Mode):
+- **Mục đích:** Cung cấp cho ứng dụng danh sách 5 nhóm Case Studies bài đăng mẫu đã qua xác thực (Bẫy lừa cọc, Bóc lột Multi-Task, JD chuẩn minh bạch, Dàn Botnet Seeding, Bẫy nhiệm vụ Telegram).
+- **Mạch dữ liệu (Data Pipeline):**
+  1. Frontend khởi tạo ứng dụng ➔ Gửi yêu cầu `GET /api/cases` (hoặc `/api/jobs`).
+  2. Controller `getCases` kiểm tra trạng thái MongoDB Atlas. Nếu khả dụng, thực hiện `Job.find({}).lean()` để truy vấn dữ liệu từ collection `jobs`.
+  3. Nếu kết nối MongoDB gián đoạn, tự động chuyển sang đọc file cục bộ `data/jobs.json` để đảm bảo 100% Uptime.
+  4. Trả về mảng JSON lồng cấu trúc nhóm Cấp 1 (`caseTitle`, `caseBadge`) & Cấp 2 (`jobs`).
 
-JSON
-{
-  "success": true,
-  "mode": "LIVE_AI",
-  "data": {
-    "redFlags": [
-      {
-        "phrase": "đóng phí giữ chỗ 500k",
-        "reason": "Bẫy lừa cọc tài chính trước khi nhận việc.",
-        "category": "Upfront Fee Scam"
-      }
-    ]
-  }
-}
-C. POST /api/scan/comments
-Description: Scans the comment section under a job post to detect Botnet/Seeding behavior.
+---
 
-Request Body:
+### 🔍 2. Mạch Xử Lý `POST /api/analyze` (Engine nhận `jdText`, Bóc tách Red Flags & Ghi Audit Log)
 
-JSON
-{
-  "jobId": "job-001",
-  "comments": [
-    { "id": "c1", "userName": "User A", "text": "Công ty xịn lắm em vừa nhận lương 30tr nè!" }
-  ]
-}
-Success Response (LIVE AI Mode):
+```text
+[ CLIENT (REACT) ] ──► POST /api/analyze { jdText } ──► [ EXPRESS ROUTER ]
+                                                                │
+                                                                ▼
+                                                   [ scanController.analyzeJD ]
+                                                                │
+                                              ┌─────────────────┴─────────────────┐
+                                              ▼                                   ▼
+                                   [ REGEX DETECTION ENGINE ]           [ GEMINI 2.5 AI ENGINE ]
+                                  (Pattern match: cọc, Zalo,          (Structured JSON extraction:
+                                   Telegram, phí thiết bị)             redFlags & marketBenchmark)
+                                              │                                   │
+                                              └─────────────────┬─────────────────┘
+                                                                │
+                                                                ▼
+                                                [ MERGE & ASSESS RISK SEVERITY ]
+                                                                │
+                                                                ▼
+                                               [ AUDIT LOG PERSISTENCE (MONGO ATLAS) ]
+                                               Save to collection `scanned_jobs`:
+                                               { rawJdText, redFlags, riskScore, createdAt }
+                                                                │
+                                                                ▼
+                                                  [ Return Real-Time JSON Stream ]
+```
 
-JSON
-{
-  "success": true,
-  "mode": "LIVE_AI",
-  "data": {
-    "comments": [
-      {
-        "id": "c1",
-        "isBot": true,
-        "botReason": "Fake Social Proof - Mẫu câu tạo niềm tin giả lập."
-      }
-    ]
-  }
-}
-4. GEMINI SDK INTEGRATION & STRUCTURED JSON SCHEMAS
-When calling @google/genai, ALWAYS enforce structured JSON output using responseMimeType and responseSchema.
+- **Mục đích:** Nhận văn bản JD tùy chỉnh từ ô `[ 🔍 CUSTOM JD INSPECTOR ]` do người dùng dán vào, tự động bóc tách các dấu hiệu rủi ro và lưu lại nhật ký phân tích (Audit Log).
+- **Mạch xử lý từng bước (Step-by-Step Pipeline):**
+  1. **Nhận Input:** Controller tiếp nhận payload `{ jdText: "..." }` từ client.
+  2. **Regex Rule Engine (`regexService.js`):** Chạy các biểu thức chính quy quét qua văn bản để phát hiện lập tức các cụm từ rủi ro cao (chuyển tiền, đặt cọc 500k, Zalo cá nhân, tuyển rạp phim, cắt mác gia công tại nhà, phí kích hoạt tài khoản Telegram).
+  3. **Gemini AI Engine (`geminiService.js`):** Gọi Gemini 2.5 Flash API với Structured JSON Schema để trích xuất danh sách `redFlags` (`phrase`, `reason`, `category`) và `marketBenchmark` chuyên sâu.
+  4. **Ghi nhận Audit Log (MongoDB Atlas `scanned_jobs`):** Tạo tài liệu mới trong collection `scanned_jobs` lưu vết:
+     - `rawJdText`: Văn bản nguyên bản người dùng dán vào.
+     - `detectedRedFlags`: Danh sách Red Flags phát hiện được.
+     - `riskSeverity`: Đánh giá rủi ro (RED_FLAG / WARNING / SAFE).
+     - `createdAt`: Thời gian tạo audit.
+  5. **Trả kết quả Real-time:** Trả về kết quả JSON với đầy đủ Red Flags để Frontend highlight giao diện.
 
-Sample SDK Implementation Pattern:
-JavaScript
-const { GoogleGenAI, Type } = require('@google/genai');
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+---
+
+## 4. GEMINI SDK INTEGRATION & STRUCTURED JSON SCHEMAS
+
+When calling `@google/genai`, ALWAYS enforce structured JSON output using `responseMimeType` and `responseSchema`.
+
+```javascript
+const { ai, Type, GEMINI_MODEL } = require('../config/gemini');
 
 const response = await ai.models.generateContent({
-  model: 'gemini-2.5-flash',
+  model: GEMINI_MODEL,
   contents: promptText,
   config: {
     responseMimeType: 'application/json',
@@ -135,48 +166,48 @@ const response = await ai.models.generateContent({
             },
             required: ['phrase', 'reason']
           }
-        }
+        },
+        marketBenchmark: { type: Type.STRING }
       }
     }
   }
 });
-5. FAIL-SAFE FALLBACK MECHANISM (100% UPTIME GUARANTEE)
-Backend MUST implement a Dual-Mode Execution model inside scanController.js:
+```
 
+---
+
+## 5. FAIL-SAFE FALLBACK MECHANISM (100% UPTIME GUARANTEE)
+
+Backend triển khai mô hình Dual-Mode Execution giúp hệ thống hoạt động ổn định 100%:
+
+```text
 ┌────────────────────────────────────────────────────────┐
 │                   Incoming Request                     │
 └──────────────────────────┬─────────────────────────────┘
                            │
-                 Is GEMINI_API_KEY valid?
+                Is GEMINI_API_KEY valid?
                 /                        \
            [YES]                          [NO]
              │                             │
     Try Gemini 2.5 API Call                │
-    (Timeout = 2.5s limit)                 │
+    (Timeout / Quota check)                │
         /             \                    │
    (Success)       (Error/Timeout)         │
       │                │                   │
   Return Mode:         └─────────┬─────────┘
   "LIVE_AI"                      │
                                  ▼
-                     Read `data/jobs.json`
+                   Read `data/jobs.json` / MongoDB
                                  │
                             Return Mode:
                          "OFFLINE_FALLBACK"
-Fallback Rules:
-Always wrap external AI API calls inside a try...catch block.
+```
 
-If process.env.GEMINI_API_KEY is missing or default placeholder, immediately trigger Fallback.
+---
 
-If Gemini API throws rate limit (429), connection error, or takes > 2.5s, catch the error and execute getLocalData().
+## 6. BACKEND CODING RULES
 
-Fallback responses MUST match the exact JSON schema expected by Frontend, returning mode: "OFFLINE_FALLBACK".
-
-6. BACKEND CODING RULES
-Do not use complex ORMs or external database drivers; keep all persistence within data/jobs.json.
-
-Keep environment variables strictly in .env (PORT, GEMINI_API_KEY).
-
-Always enable CORS (cors()) to accept cross-origin requests from http://localhost:5173 (Vite Frontend).
-
-Do not crash the Node.js process under any error condition; return structured JSON error messages or Fallback data gracefully.
+- Tuân thủ nghiêm ngặt kiến trúc MVC phân tầng (`config/`, `controllers/`, `services/`, `models/`, `routes/`, `utils/`).
+- Quản lý biến môi trường trong `.env` (`PORT`, `GEMINI_API_KEY`, `MONGO_URI`).
+- Luôn bật `cors()` cho phép Frontend kết nối từ `http://localhost:5173`.
+- Ghi nhật ký lỗi bằng `logger` thay vì `console.log` thuần.

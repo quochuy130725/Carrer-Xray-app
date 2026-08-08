@@ -1,23 +1,38 @@
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
 require('dotenv').config();
 
-const { scanJD } = require('./controllers/scanController');
+const connectDB = require('./config/db');
+const scanRoutes = require('./routes/scanRoutes');
+const { getCases, analyzeCustomJD } = require('./controllers/scanController');
+const errorHandler = require('./middleware/errorHandler');
+const logger = require('./utils/logger');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
+// Kết nối Database (MongoDB)
+connectDB();
 
-// Kết nối MongoDB Local
-const MONGO_URI = process.env.MONGO_URI;
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('🍃 Connected to Local MongoDB successfully!'))
-    .catch((err) => console.warn('⚠️ MongoDB connection error, system will use jobs.json Fallback:', err.message));
+// Global CORS Middleware (Tự động xử lý Preflight OPTIONS & All Origins)
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Payload Parsers
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
 // Routes
 app.get('/api/health', (req, res) => res.json({ status: 'CAREER X-RAY Server Ready' }));
-app.post('/api/scan/jd', scanJD);
+app.get('/api/cases', getCases);
+app.post('/api/analyze', analyzeCustomJD);
+app.use('/api/scan', scanRoutes);
+
+// Global Error Handler Middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 CAREER X-RAY Server running on port ${PORT}`));
+app.listen(PORT, () => logger.info(`🚀 CAREER X-RAY Server running on port ${PORT}`));

@@ -1,49 +1,490 @@
 [
   {
-    "id": "job-001",
-    "title": "Thực Tập Sinh Content Marketing (Thu Nhập Đến 20M)",
-    "company": "Công Ty TNHH Truyền Thông X",
-    "time": "2 giờ trước",
-    "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=HR_Alex",
-    "jdText": "Công ty cần tuyển 5 bạn TTS Content Marketing. Lương cứng 5 triệu + KPI hoa hồng lên đến 20 triệu/tháng. Yêu cầu: Nộp phí giữ chỗ thiết bị 500k (hoàn lại sau 1 tháng). Chi tiết liên hệ Telegram @hr_manager_x.",
-    "marketBenchmark": "Bộ Luật Lao Động cấm thu bất kỳ khoản phí nào khi tuyển dụng. Mức lương TTS Marketing chuẩn thị trường dao động từ 2 - 5 triệu.",
-    "redFlags": [
+    "caseId": "case-1",
+    "caseTitle": "Case #1: Bẫy Lừa Cọc & Tuyển Dụng Ảo",
+    "caseTitle_en": "Case #1: Upfront Deposit Trap & Ghost Hiring",
+    "caseBadge": "🚨 BÁO ĐỘNG ĐỎ",
+    "caseBadge_en": "🚨 RED ALERT",
+    "jobs": [
       {
-        "phrase": "Nộp phí giữ chỗ thiết bị 500k",
-        "reason": "Bẫy lừa cọc tài chính trước khi nhận việc.",
-        "category": "Upfront Fee Scam"
+        "id": "job-001",
+        "title": "Thực Tập Sinh Truyền Thông (Hybrid - Up to 15.000.000 VNĐ)",
+        "company": "Công ty Cổ phần Tập đoàn Media X (Dấu hiệu mạo danh)",
+        "time": "Vừa xong",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=MediaXScam",
+        "jdText_vi": "Tuyển gấp 5 Thực tập sinh Truyền thông làm việc Hybrid. Mức lương hấp dẫn up to 15.000.000 VNĐ/tháng không yêu cầu kinh nghiệm. Môi trường làm việc trẻ trung, linh hoạt thời gian. Đãi ngộ: Được đào tạo từ A-Z, hỗ trợ dấu mốc thực tập. Yêu cầu: Có laptop cá nhân, chấp nhận đóng phí cọc thiết bị 500k để nhận tài liệu bảo mật công ty (sẽ hoàn lại sau 1 tháng). Ứng viên chuyển khoản giữ chỗ qua STK công ty trước khi phỏng vấn...",
+        "jdText_en": "URGENTLY HIRING 5 Media Communication Interns – Hybrid Work Model. Attractive salary up to 15,000,000 VND/month, NO experience required. Young and flexible working environment. Benefits: Full A-Z training provided. Requirements: Must own a personal laptop. Candidates must pay an upfront equipment deposit of 500k to receive confidential company documents (refundable after 1 month). Applicants must transfer a seat reservation fee to our company bank account BEFORE the interview...",
+        "marketBenchmark_vi": "Theo Điều 17 Bộ Luật Lao Động 2019, doanh nghiệp nghiêm cấm hành vi yêu cầu người lao động nộp tiền hoặc tài sản bảo đảm. Mức lương Thực tập sinh truyền thông chưa có kinh nghiệm chuẩn thị trường chỉ dao động từ 2 - 4 triệu/tháng.",
+        "marketBenchmark_en": "Under Article 17 of the Labor Code 2019, it is STRICTLY PROHIBITED for employers to demand money or asset deposits from job candidates. The standard market salary for inexperienced Media Communication interns is only 2–4 million VND/month (approx. $80–$160 USD).",
+        "redFlags_vi": [
+          {
+            "phrase": "up to 15.000.000 VNĐ/tháng",
+            "reason": "Mức lương ảo bất thường đối với vị trí Thực tập sinh chưa có kinh nghiệm.",
+            "category": "Unrealistic Salary"
+          },
+          {
+            "phrase": "đóng phí cọc thiết bị 500k",
+            "reason": "Dấu hiệu lừa đảo. Doanh nghiệp uy tín không bao giờ thu phí cọc của ứng viên.",
+            "category": "Upfront Deposit Trap"
+          },
+          {
+            "phrase": "chuyển khoản giữ chỗ",
+            "reason": "Thao túng tâm lý sợ mất cơ hội để chiếm đoạt tài sản.",
+            "category": "Urgency Manipulation"
+          }
+        ],
+        "redFlags_en": [
+          {
+            "phrase": "up to 15,000,000 VND/month",
+            "reason": "Unrealistically inflated salary for an entry-level intern with no experience — a classic FOMO lure to attract vulnerable applicants.",
+            "category": "Unrealistic Salary"
+          },
+          {
+            "phrase": "upfront equipment deposit of 500k",
+            "reason": "ILLEGAL under Labor Code 2019 Art. 17. Reputable employers NEVER charge candidates an equipment deposit or security fee.",
+            "category": "Upfront Deposit Trap"
+          },
+          {
+            "phrase": "transfer a seat reservation fee",
+            "reason": "Psychological manipulation exploiting fear-of-missing-out to coerce candidates into transferring money before any legitimate interview.",
+            "category": "Urgency Manipulation"
+          }
+        ],
+        "comments": [
+          {
+            "id": "c1_1",
+            "userName": "Trần Minh Anh",
+            "text_vi": "Cho em xin JD chi tiết vào inbox với ạ.",
+            "text_en": "Could you send me the detailed JD via inbox please?",
+            "isBot": false
+          },
+          {
+            "id": "c1_2",
+            "userName": "Lê Hoàng (Clone Bot)",
+            "text_vi": "Công ty uy tín lắm mn ơi, tuần trước mình mới cọc xong nhận việc luôn nè!",
+            "text_en": "This company is totally legit guys, I paid my deposit last week and got the job immediately!",
+            "isBot": true,
+            "botReason_vi": "Fake Social Proof — Dùng tài khoản Clone tạo niềm tin giả lập để dụ nạn nhân chuyển tiền cọc.",
+            "botReason_en": "Fake Social Proof — A clone bot account fabricating trust to lure victims into paying the deposit."
+          }
+        ],
+        "title_en": "Media Communication Intern (Hybrid - Up to 15,000,000 VND)",
+        "company_en": "Media X Group JSC (Impersonation Sign)"
       },
       {
-        "phrase": "Thu Nhập Đến 20M",
-        "reason": "KPI ảo không thực tế cho vị trí thực tập sinh.",
-        "category": "Unrealistic KPI"
+        "id": "job-008",
+        "title": "Tuyển Nhân Viên Kho Soạn Hàng (Lương 9.800.000 VNĐ)",
+        "company": "Tài khoản cá nhân (Dung Hà - Tuyển tự do)",
+        "time": "37 phút trước",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=WarehouseFakeScam",
+        "jdText_vi": "LÀM KHU VỰC TPHCM\nTuyển NV kho Thay Cho Bạn Nghỉ - Soạn Hàng Sắp xếp Hàng hóa và hỗ trợ khách mua hang\nLàm Giờ Hành Chính Thứ 2 Thứ 7 (Chủ Nhật nghỉ)\nTuổi 20 Tuổi đến 58 tuổi\nLương: 9tr800\nLiên Hệ: 0703 266 016 _ 0367 527 259 (Zalo)",
+        "jdText_en": "WORK LOCATION: HO CHI MINH CITY\nHiring Warehouse Staff (Urgent Replacement) — Picking, sorting, and arranging goods; assisting walk-in customers.\nWorking Hours: Monday to Saturday, standard office hours (Sunday off).\nAge: 20 to 58 years old.\nSalary: 9,800,000 VND/month.\nContact: 0703 266 016 _ 0367 527 259 (Zalo)",
+        "marketBenchmark_vi": "Chiêu trò tuyển kho mập mờ địa chỉ, độ tuổi 20-58 cùng mức lương 9.8tr là dấu hiệu của trung tâm môi giới ma thu tiền cọc làm thẻ/đồng phục.",
+        "marketBenchmark_en": "Vague warehouse address, an unusually wide age range (20–58), and recruitment via personal Zalo are classic indicators of a ghost staffing agency that charges candidates for staff ID cards or uniforms.",
+        "redFlags_vi": [
+          {
+            "phrase": "Liên Hệ: 0703 266 016 _ 0367 527 259 (Zalo)",
+            "reason": "Tuyển dụng không qua phòng HR chuyên nghiệp mà dùng SĐT/Zalo cá nhân ẩn danh.",
+            "category": "Unofficial Contact"
+          },
+          {
+            "phrase": "Tuyển NV kho Thay Cho Bạn Nghỉ",
+            "reason": "Mô tả công việc mập mờ, tạo cớ tuyển gấp để dụ nạn nhân sập bẫy môi giới.",
+            "category": "Vague Job Description"
+          }
+        ],
+        "redFlags_en": [
+          {
+            "phrase": "0703 266 016 _ 0367 527 259 (Zalo)",
+            "reason": "Recruiting via anonymous personal phone numbers and Zalo instead of a legitimate corporate HR department — a major red flag for identity-unverifiable scam operations.",
+            "category": "Unofficial Contact"
+          },
+          {
+            "phrase": "Hiring Warehouse Staff (Urgent Replacement)",
+            "reason": "Vague job description with manufactured urgency — a common tactic used by ghost staffing agencies to rush victims into paying upfront fees.",
+            "category": "Vague Job Description"
+          }
+        ],
+        "comments": [
+          {
+            "id": "c8_1",
+            "userName": "Phạm Văn Tấn",
+            "text_vi": "Nhắn Zalo nó cho địa chỉ ở quận 12 bắt tới nộp 400k tiền đồng phục rồi cho cái kho ma nha mng!",
+            "text_en": "Messaged them on Zalo, they gave me an address in District 12 and demanded 400k for uniforms — then pointed me to a GHOST warehouse. Watch out everyone!",
+            "isBot": false
+          }
+        ],
+        "title_en": "Hiring Warehouse Staff (Salary 9,800,000 VND)",
+        "company_en": "Personal Account (Dung Ha - Freelance Recruiter)"
       },
       {
-        "phrase": "Telegram @hr_manager_x",
-        "reason": "Dấu hiệu ẩn danh, tránh bị truy vết trên nền tảng chính thức.",
-        "category": "Anonymous Contact"
+        "id": "job-009",
+        "title": "Việc Làm Online Tại Nhà: Gia Công Cắt Mác May Mặc (Mạo Danh Việt Tiến)",
+        "company": "Việt Tiến Gia Công May Mặc (Tin nhắn mạo danh)",
+        "time": "12:20",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=VietTienFakeScam",
+        "jdText_vi": "✅ Em chào chị! Em là Bùi Huyền My chuyên viên tư vấn hỗ trợ đăng ký việc làm online tại nhà mã nhân viên VT-126. Em gửi chị chính sách của công ty Việt Tiến:\n- Công việc là cắt mác từ quận to ra các mác nhỏ\n- Có nhân viên giao hàng tại nhà và hướng dẫn làm cụ thể\n- Lương ăn theo sản phẩm\n- Không cọc không phí, không mua nguyên liệu\n- Được ứng trước 50% lương khi nhận hàng\n'Yêu cầu có TK NGÂN HÀNG để nhận lương'",
+        "jdText_en": "✅ Hello! I'm Bùi Huyền My, a home-based job registration consultant with employee code VT-126. Here is the policy from Việt Tiến company:\n- Task: Cutting large garment labels into smaller labels at home\n- A delivery staff will come to your home and provide instructions\n- Pay-per-piece salary structure\n- No deposit, no fees, no material purchase needed\n- 50% salary advance upon receiving the shipment\n'Requirement: Must have a BANK ACCOUNT to receive payment'",
+        "marketBenchmark_vi": "Tổng Công ty Cổ phần Phong Phú / Việt Tiến chính thức cảnh báo KHÔNG BAO GIỜ tuyển CTV cắt mác hay gia công tại nhà qua tin nhắn riêng. Đây là hình thức lừa đảo thao túng tài khoản ngân hàng để chiếm đoạt tiền.",
+        "marketBenchmark_en": "Viet Tien Garment (official) has publicly warned that they NEVER recruit home-based label-cutting contractors via private messages. This is a bank account manipulation scam designed to steal funds through fake transaction verification requests.",
+        "redFlags_vi": [
+          {
+            "phrase": "Việt Tiến Gia Công May Mặc",
+            "reason": "Mạo danh thương hiệu may mặc lớn Việt Tiến để tạo niềm tin giả.",
+            "category": "Brand Impersonation"
+          },
+          {
+            "phrase": "cắt mác từ quận to ra các mác nhỏ",
+            "reason": "Công việc gia công vô lý không có thật trong quy trình sản xuất dệt may công nghiệp.",
+            "category": "Fake Homework Trap"
+          },
+          {
+            "phrase": "Yêu cầu có TK NGÂN HÀNG để nhận lương",
+            "reason": "Bẫy dẫn dụ ứng viên liên kết tài khoản ngân hàng hoặc nạp tiền xác minh giao dịch.",
+            "category": "Financial Information Trap"
+          }
+        ],
+        "redFlags_en": [
+          {
+            "phrase": "Việt Tiến company",
+            "reason": "Brand impersonation of a major Vietnamese garment corporation to create false legitimacy and trust.",
+            "category": "Brand Impersonation"
+          },
+          {
+            "phrase": "Cutting large garment labels into smaller labels at home",
+            "reason": "A completely non-existent task in real industrial garment manufacturing — fabricated to create a believable work-from-home pretext.",
+            "category": "Fake Homework Trap"
+          },
+          {
+            "phrase": "Must have a BANK ACCOUNT to receive payment",
+            "reason": "A financial entrapment tactic designed to coerce victims into linking their bank account or making 'verification deposits' that are then stolen.",
+            "category": "Financial Information Trap"
+          }
+        ],
+        "comments": [
+          {
+            "id": "c9_1",
+            "userName": "Lê Thị Mai",
+            "text_vi": "Này lúc sau nó bắt kết bạn Telegram nhận 'mã đơn hàng' rồi bảo đóng tiền phí vận chuyển mng cẩn thận!",
+            "text_en": "Later they forced me to add them on Telegram to receive an 'order code', then demanded a 'shipping fee' payment. Everyone be careful!",
+            "isBot": false
+          }
+        ],
+        "title_en": "Work From Home: Garment Label Cutting (Viet Tien Impersonation)",
+        "company_en": "Viet Tien Garment Outsourcing (Fake Message)"
+      },
+      {
+        "id": "job-010",
+        "title": "Tuyển Nhân Viên Rạp Chiếu Phim TP.HCM (25k-35k/h)",
+        "company": "Tuyển Dụng Rạp Phim TP.HCM (Fanpage mạo danh)",
+        "time": "17 tháng 6",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=CinemaFakeScam",
+        "jdText_vi": "🔥 TUYỂN NHÂN VIÊN RẠP CHIẾU PHIM – TP.HCM 🔥\n📌 VỊ TRÍ: Soát vé, Bán bắp nước, Phục vụ, Giám sát camera...\n💰 THU NHẬP: 25.000 – 35.000đ/giờ\n📩 ỨNG TUYỂN NGAY: Nhắn tin Zalo: 0852.909.683 (Ms Bảo An phòng QLNS)",
+        "jdText_en": "🔥 CINEMA STAFF HIRING – HO CHI MINH CITY 🔥\n📌 POSITIONS: Ticket scanning, Popcorn & beverage sales, Customer service, CCTV monitoring...\n💰 INCOME: 25,000 – 35,000 VND/hour\n📩 APPLY NOW: Message via Zalo: 0852.909.683 (Ms. Bao An – HR Dept)",
+        "marketBenchmark_vi": "Các cụm rạp lớn tuyển dụng trực tiếp qua Fanpage có tích xanh. Tuyển rạp phim qua Zalo cá nhân 100% là môi giới lừa đảo tiền cọc.",
+        "marketBenchmark_en": "Major cinema chains (CGV, Lotte, Galaxy) recruit exclusively through their verified blue-tick Fanpages. Any cinema job posting routed via a personal Zalo number is 100% a scam broker charging upfront ID card/uniform fees.",
+        "redFlags_vi": [
+          {
+            "phrase": "Nhắn tin Zalo: 0852.909.683 (Ms Bảo An phòng QLNS)",
+            "reason": "Điều hướng ứng viên sang Zalo cá nhân thay vì quy trình HR chính thức.",
+            "category": "Unofficial Contact"
+          }
+        ],
+        "redFlags_en": [
+          {
+            "phrase": "Message via Zalo: 0852.909.683",
+            "reason": "Redirecting applicants to a personal Zalo number instead of an official corporate HR system — bypassing accountability and platform moderation.",
+            "category": "Unofficial Contact"
+          }
+        ],
+        "comments": [
+          {
+            "id": "c10_1",
+            "userName": "Nguyễn Hoàng Nam",
+            "text_vi": "Đừng nhắn Zalo nhé, bắt thu 350k tiền làm thẻ nhân viên đó!",
+            "text_en": "Don't message them on Zalo — they charged me 350k for a so-called staff ID card!",
+            "isBot": false
+          }
+        ],
+        "title_en": "Hiring HCMC Cinema Staff (25k-35k/hr)",
+        "company_en": "HCMC Cinema Recruitment (Fake Fanpage)"
       }
-    ],
-    "comments": [
+    ]
+  },
+  {
+    "caseId": "case-2",
+    "caseTitle": "Case #2: Bóc Lột Multi-Task & Thu Nhập Mơ Hồ",
+    "caseTitle_en": "Case #2: Multi-Task Exploitation & Vague Compensation",
+    "caseBadge": "⚠️ CẢNH BÁO",
+    "caseBadge_en": "⚠️ WARNING",
+    "jobs": [
       {
-        "id": "c1",
-        "userName": "Minh Anh",
-        "text": "Em vừa nhận lương 18tr tháng đầu nè mọi người ơi, môi trường xịn lắm!",
-        "isBot": true,
-        "botReason": "Fake Social Proof — Seeding tạo niềm tin ảo bằng con số phi thực tế."
+        "id": "job-002",
+        "title": "Nhân Viên Marketing Multi-Task (Thu Nhập Không Giới Hạn)",
+        "company": "AMRITA (Ngọc Lan Hương)",
+        "time": "2 tháng 8 lúc 12:38",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=AmritaMarketing",
+        "jdText_vi": "AMRITA TUYỂN DỤNG NHÂN VIÊN MARKETING\nThu nhập: không giới hạn theo năng lực\nYêu cầu:\n- Biết chỉnh sửa giao diện website, cập nhật nội dung, hình ảnh sản phẩm\n- Thành thạo đăng tải hình ảnh, banner lên website và sàn TMĐT\n- Viết bài chuẩn SEO, Thiết kế Canva/Photoshop, Edit Video TikTok/Reels...\nGmail : vaycuoi.com.vn@gmail.com",
+        "jdText_en": "AMRITA IS HIRING A MARKETING STAFF MEMBER\nCompensation: unlimited income based on performance\nRequirements:\n- Able to edit website UI, update content and product images\n- Proficient in uploading images and banners to websites and e-commerce platforms\n- Write SEO-optimized articles, Design with Canva/Photoshop, Edit TikTok/Reels videos...\nContact: vaycuoi.com.vn@gmail.com",
+        "marketBenchmark_vi": "JD có dấu hiệu bóc lột khi ép 1 nhân sự gánh 5 vị trí chuyên môn. Doanh nghiệp uy tín phải công khai lương cứng cơ bản.",
+        "marketBenchmark_en": "This JD forces a single employee to handle 5 distinct specialist roles (Web Dev, Content, SEO, Design, Video) while hiding any base salary. Legitimate employers always disclose a fixed base salary range. Contact via a generic Gmail instead of a corporate domain is also suspicious.",
+        "redFlags_vi": [
+          {
+            "phrase": "Thu nhập: không giới hạn theo năng lực",
+            "reason": "Giấu mức lương cứng cơ bản để ép KPI doanh số ảo.",
+            "category": "Vague Compensation"
+          },
+          {
+            "phrase": "Biết chỉnh sửa giao diện website",
+            "reason": "Gom 5 vị trí chuyên môn vào 1 nhân sự với mức lương không rõ ràng.",
+            "category": "Multi-Task Exploitation"
+          }
+        ],
+        "redFlags_en": [
+          {
+            "phrase": "unlimited income based on performance",
+            "reason": "Concealing a fixed base salary behind vague commission language — a common tactic to enforce exploitative, unpaid KPI targets.",
+            "category": "Vague Compensation"
+          },
+          {
+            "phrase": "vaycuoi.com.vn@gmail.com",
+            "reason": "Using a free Gmail address instead of a corporate domain email (@amrita.com.vn) indicates an unregistered or non-transparent employer.",
+            "category": "Unofficial Contact"
+          }
+        ],
+        "comments": [
+          {
+            "id": "c2_1",
+            "userName": "Đặng Quốc Bảo",
+            "text_vi": "Không để lương cứng thì chắc lại kèo lương theo doanh số 0 đồng rồi.",
+            "text_en": "No fixed salary listed... that usually means a 0-base commission deal where you work for free.",
+            "isBot": false
+          },
+          {
+            "id": "c2_2",
+            "userName": "seeding_marketing_bot",
+            "text_vi": "Môi trường làm việc thoải mái lắm ạ, bạn nào chăm chỉ thu nhập toàn 20-30tr/tháng thôi!",
+            "text_en": "The work environment is so relaxed! Hardworking people easily earn 20-30 million VND a month here!",
+            "isBot": true,
+            "botReason_vi": "Lure Seeding — Nick clone vào bình ổn tâm lý, vẽ ra thu nhập ảo để dụ ứng viên nộp CV.",
+            "botReason_en": "Lure Seeding — A clone account fabricating unrealistic earnings to psychologically nudge naive applicants into submitting their CVs."
+          }
+        ],
+        "title_en": "Multi-Task Marketing Staff (Unlimited Income)",
+        "company_en": "AMRITA (Ngoc Lan Huong)"
+      }
+    ]
+  },
+  {
+    "caseId": "case-3",
+    "caseTitle": "Case #3: JD Chuẩn Minh Bạch (Mẫu Đối Chiếu)",
+    "caseTitle_en": "Case #3: Transparent & Verified JD (Reference Standard)",
+    "caseBadge": "🟢 AN TOÀN",
+    "caseBadge_en": "🟢 VERIFIED SAFE",
+    "jobs": [
+      {
+        "id": "job-003",
+        "title": "FPT Software Tuyển Dụng Junior – Fresher – OJT – Intern",
+        "company": "FPT Software HCM (Xác thực chính thức)",
+        "time": "11 tháng 5",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=FptSoftwareAcademy",
+        "jdText_vi": "🚀 JOB BOARD THÁNG 5: FPT SOFTWARE TUYỂN DỤNG HÀNG LOẠT JUNIOR–FRESHER–OJT–INTERN\n👉 ỨNG TUYỂN NGAY TẠI: https://forms.gle/288WXZJjMoLKaBQMA\n📧 Email: earlycareers@fpt.com\n🌐 Website: https://fsoft-academy.edu.vn/tuyen-dung/",
+        "jdText_en": "🚀 MAY JOB BOARD: FPT SOFTWARE IS MASS HIRING JUNIOR – FRESHER – OJT – INTERN\n👉 APPLY NOW AT: https://forms.gle/288WXZJjMoLKaBQMA\n📧 Email: earlycareers@fpt.com\n🌐 Website: https://fsoft-academy.edu.vn/tuyen-dung/",
+        "marketBenchmark_vi": "🟢 BÀI ĐĂNG ĐẠT CHUẨN MINH BẠCH: Tiếp nhận CV qua Email tên miền doanh nghiệp chính thức (@fpt.com) và Website đuôi .edu.vn.",
+        "marketBenchmark_en": "🟢 FULLY TRANSPARENT POST: CVs are accepted via an official corporate email domain (@fpt.com) and a verified educational institution website (.edu.vn). No fees, no Zalo redirects, no vague salary claims.",
+        "redFlags_vi": [],
+        "redFlags_en": [],
+        "comments": [
+          {
+            "id": "c3_1",
+            "userName": "Phạm Quốc Huy",
+            "text_vi": "Cho em hỏi vị trí OJT RPA đợt này còn nhận hồ sơ không ạ?",
+            "text_en": "Hi, is the OJT RPA position still accepting applications this round?",
+            "isBot": false
+          },
+          {
+            "id": "c3_2",
+            "userName": "Nguyễn Lê Hoàng",
+            "text_vi": "Em đã điền form ứng tuyển và gửi CV qua email earlycareers@fpt.com rồi ạ!",
+            "text_en": "I've already filled in the application form and sent my CV to earlycareers@fpt.com!",
+            "isBot": false
+          }
+        ],
+        "title_en": "FPT Software Hiring Junior – Fresher – OJT – Intern",
+        "company_en": "FPT Software HCM (Verified Official)"
       },
       {
-        "id": "c2",
-        "userName": "Tuấn Kiệt",
-        "text": "Ib em với ạ, em chuyển cọc 500k rồi thì làm gì tiếp theo ạ?",
-        "isBot": false
-      },
+        "id": "job-011",
+        "title": "Tuyển Dụng IT: .NET / BA / Manual QC / Angular / Java",
+        "company": "Saigon Technology (Xác thực chính thức)",
+        "time": "3 tháng 8",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=SaigonTechnologyVerified",
+        "jdText_vi": "THÁNG NÀY, TEAM SAIGON TECHNOLOGY ĐANG TÌM: .NET / BA / Manual QC / Angular...\n🌐 Đăng ký: https://careers.saigontechnology.com\n📧 Email: Career@saigontechnology.com",
+        "jdText_en": "THIS MONTH, SAIGON TECHNOLOGY IS LOOKING FOR: .NET / BA / Manual QC / Angular...\n🌐 Apply: https://careers.saigontechnology.com\n📧 Email: Career@saigontechnology.com",
+        "marketBenchmark_vi": "🟢 BÀI ĐẠT CHUẨN MINH BẠCH: Địa chỉ trụ sở rõ ràng, Email tên miền công ty chính thức.",
+        "marketBenchmark_en": "🟢 FULLY TRANSPARENT POST: Clear headquarters address, official corporate email domain, and dedicated careers portal. This is a benchmark-quality job posting.",
+        "redFlags_vi": [],
+        "redFlags_en": [],
+        "comments": [
+          {
+            "id": "c11_1",
+            "userName": "Trần Minh Khoa",
+            "text_vi": "Đã submit CV vị trí BA qua link chính thức!",
+            "text_en": "Just submitted my CV for the BA position via the official careers link!",
+            "isBot": false
+          }
+        ],
+        "title_en": "IT Recruitment: .NET / BA / Manual QC / Angular / Java",
+        "company_en": "Saigon Technology (Verified Official)"
+      }
+    ]
+  },
+  {
+    "caseId": "case-4",
+    "caseTitle": "Case #4: Dàn Nick Ảo Seeding & Thao Túng Đám Đông",
+    "caseTitle_en": "Case #4: Botnet Seeding & Crowd Manipulation Network",
+    "caseBadge": "🤖 BOTNET",
+    "caseBadge_en": "🤖 BOTNET DETECTED",
+    "jobs": [
       {
-        "id": "c3",
-        "userName": "Hoàng Nam",
-        "text": "Cơ hội tốt quá, ứng tuyển gấp kẻo hết slot mn ơi!",
-        "isBot": true,
-        "botReason": "Urgency Bait — Tạo cảm giác khan hiếm giả lập thúc ép cọc tiền."
+        "id": "job-004",
+        "title": "Tuyển CTV Gõ Truyện Tiểu Thuyết (35k-100k/trang)",
+        "company": "CTV5555 (Dàn Bot Spammer Crowd Seeding)",
+        "time": "9 tháng 8",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=TypingScam5555",
+        "jdText_vi": "[📣📣] Tuyển dụng NV vị trí SOẠN THẢO VĂN BẢN - NHÂN VIÊN GÕ TIỂU THUYẾT\nThu Nhập: 35-100 Cành/1 trang A4.\nINBOX LIỀN TAY NHẬN NGAY CÔNG VIỆC MỚI",
+        "jdText_en": "[📣📣] HIRING: DOCUMENT TYPISTS – NOVEL TRANSCRIPTION STAFF\nIncome: 35–100 'branches' (35,000–100,000 VND) per A4 page.\nINBOX NOW TO LAND THIS JOB INSTANTLY",
+        "marketBenchmark_vi": "Thù lao gõ văn bản ảo gấp 20 lần thực tế nhằm dụ ứng viên sập bẫy nộp phí cọc.",
+        "marketBenchmark_en": "The claimed pay rate (35k–100k per page) is 20x the real market rate for document typing. The exaggerated compensation and 'INBOX NOW' urgency are engineered to funnel victims into a private chat where deposit fees are collected.",
+        "redFlags_vi": [
+          {
+            "phrase": "35-100 Cành/1 trang A4",
+            "reason": "Mức thù lao phi thực tế cho công việc gõ bản thảo cơ bản.",
+            "category": "Unrealistic Compensation"
+          },
+          {
+            "phrase": "INBOX LIỀN TAY",
+            "reason": "Thúc giục giao dịch qua tin nhắn riêng để né tránh sự kiểm duyệt.",
+            "category": "Private Inbox Trap"
+          }
+        ],
+        "redFlags_en": [
+          {
+            "phrase": "35–100 'branches'",
+            "reason": "Slang 'branches' (cành) = thousands of VND — pay rate is 20x above real market, deliberately designed to trigger FOMO in entry-level job seekers.",
+            "category": "Unrealistic Compensation"
+          },
+          {
+            "phrase": "INBOX NOW TO LAND THIS JOB INSTANTLY",
+            "reason": "Pressuring applicants into a private direct message bypasses platform moderation and is the entry point to the deposit collection scam.",
+            "category": "Private Inbox Trap"
+          }
+        ],
+        "comments": [
+          {
+            "id": "c4_1",
+            "userName": "Kim Yến (Clone Bot)",
+            "text_vi": "check ib ạ",
+            "text_en": "check inbox pls",
+            "isBot": true,
+            "botReason_vi": "Crowd Seeding — Bot spam cmt ngắn để đẩy bài viết lên Feed và tạo tương tác ảo.",
+            "botReason_en": "Crowd Seeding — Short spam comments from bot accounts push the post up in the Feed and simulate fake engagement activity."
+          },
+          {
+            "id": "c4_2",
+            "userName": "Bich Thảo (Clone Bot)",
+            "text_vi": "Ib",
+            "text_en": "Inbox",
+            "isBot": true,
+            "botReason_vi": "FOMO Bait — Giả lập ứng viên đang tranh nhau nhận việc.",
+            "botReason_en": "FOMO Bait — Simulates a rush of competing applicants to create artificial scarcity and social pressure."
+          },
+          {
+            "id": "c4_3",
+            "userName": "Ngoc Lun (Clone Bot)",
+            "text_vi": "Ib a",
+            "text_en": "Inbox please",
+            "isBot": true,
+            "botReason_vi": "Automated Engagement — Seeding tự động bằng dàn nick rác nuôi qua tool.",
+            "botReason_en": "Automated Engagement — Systematically operated bot farm accounts designed to generate fabricated social proof signals."
+          }
+        ],
+        "title_en": "Hiring Novel Typing Collaborator (35k-100k/page)",
+        "company_en": "CTV5555 (Bot Spammer Crowd Seeding Network)"
+      }
+    ]
+  },
+  {
+    "caseId": "case-5",
+    "caseTitle": "Case #5: Bẫy Nhiệm Vụ Telegram & Thao Túng Tài Chính",
+    "caseTitle_en": "Case #5: Telegram Task Escalation & Financial Manipulation Trap",
+    "caseBadge": "🚨 BÁO ĐỘNG ĐỎ",
+    "caseBadge_en": "🚨 RED ALERT",
+    "jobs": [
+      {
+        "id": "job-005",
+        "title": "Bẫy Lừa Đảo Nhiệm Vụ Telegram: Ép Đóng 'Phí Kích Hoạt Tài Khoản' 35 Triệu",
+        "company": "Kịch bản lừa đảo Telegram (Bắt lỗi chuyển khoản sai nội dung)",
+        "time": "21:32",
+        "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=TelegramTaskEscalation",
+        "jdText_vi": "KỊCH BẢN LỪA ĐẢO TÀI CHÍNH TELEGRAM:\n- 'Bây giờ trên phòng tài chính bắt buộc yêu cầu em cần phải thực hiện lại một hóa đơn trị giá 35.115.000 vnd'\n- 'Sau khi bạn hoàn thành em nhận tổng số tiền là : 158.019.000 VND'\n- 'Hóa đơn em chuyển sai nội dung sẽ được hoàn trả sau khi em hoàn thành lại phí kích hoạt tài khoản này nha'\n- 'Sau khi em hoàn thành khoản phí kích hoạt tài khoản rồi mình làm thủ tục cho em nhận tiền về tài khoản ngân hàng cá nhân em ạ'",
+        "jdText_en": "REAL TELEGRAM FINANCIAL SCAM SCRIPT:\n- 'The finance department now requires you to re-execute a transaction worth 35,115,000 VND'\n- 'Once you complete this, you will receive a total payout of 158,019,000 VND'\n- 'Your previous transfer had the wrong description — it will be refunded after you complete the account activation fee'\n- 'Once you complete the account activation fee, we will process the full payment directly to your personal bank account'",
+        "marketBenchmark_vi": "🚨 CẢNH BÁO BẪY TÀI CHÍNH TELEGRAM: Không có doanh nghiệp hợp pháp nào thu 'phí kích hoạt tài khoản' hay yêu cầu nộp thêm tiền để sửa lỗi chuyển khoản. Đây là kịch bản lừa đảo 'thang nhiệt nhiệm vụ' (Task Escalation) 100% nhằm thao túng tâm lý và chiếm đoạt tài sản.",
+        "marketBenchmark_en": "🚨 TELEGRAM FINANCIAL TRAP ALERT: No legitimate company charges an 'account activation fee' or demands additional payments to fix transfer errors. This is a textbook 'Task Escalation' scam — a psychological manipulation loop designed to continuously extract money until the victim has no funds left.",
+        "redFlags_vi": [
+          {
+            "phrase": "thực hiện lại một hóa đơn trị giá 35.115.000 vnd",
+            "reason": "Ép nạn nhân tiếp tục chuyển khoản số tiền lớn với cớ sửa lỗi giao dịch.",
+            "category": "Task Escalation Trap"
+          },
+          {
+            "phrase": "hoàn thành lại phí kích hoạt tài khoản này nha",
+            "reason": "Bẫy thu phí giả định để phong tỏa và chiếm đoạt toàn bộ tiền cọc của nạn nhân.",
+            "category": "Account Activation Fee Trap"
+          },
+          {
+            "phrase": "nhận tổng số tiền là : 158.019.000 VND",
+            "reason": "Treo thưởng số tiền ảo khổng lồ để kích thích tâm lý muốn gỡ gạc tiền đã mất.",
+            "category": "Financial Bait"
+          }
+        ],
+        "redFlags_en": [
+          {
+            "phrase": "re-execute a transaction worth 35,115,000 VND",
+            "reason": "Pressuring the victim to transfer a large sum under the pretext of 'fixing' a previous transfer error — a core Task Escalation tactic.",
+            "category": "Task Escalation Trap"
+          },
+          {
+            "phrase": "account activation fee",
+            "reason": "A fabricated mandatory fee designed to freeze and steal the victim's deposited funds with zero legal basis.",
+            "category": "Account Activation Fee Trap"
+          },
+          {
+            "phrase": "total payout of 158,019,000 VND",
+            "reason": "An illusory reward dangled to exploit the sunk cost fallacy — convincing victims to keep paying to recover money they've already lost.",
+            "category": "Financial Bait"
+          }
+        ],
+        "comments": [
+          {
+            "id": "c5_1",
+            "userName": "Nạn nhân (Đoạn chat thực tế)",
+            "text_vi": "E hết tiền thật rồi chị ơi... Giờ e không biết mượn ai...",
+            "text_en": "I've run out of money for real... I don't even know who to borrow from anymore...",
+            "isBot": false
+          },
+          {
+            "id": "c5_2",
+            "userName": "telegram_scammer_bot",
+            "text_vi": "Cố gắng xoay xở đi em, bên phòng tài chính chỉ giữ suất hoàn tiền này trong 30 phút nữa thôi!",
+            "text_en": "You need to figure it out quickly — the finance department can only hold this refund slot for another 30 minutes!",
+            "isBot": true,
+            "botReason_vi": "Urgency Manipulation — Kẻ lừa đảo tạo áp lực thời gian để nạn nhân hoảng loạn đi vay mượn.",
+            "botReason_en": "Urgency Manipulation — The scammer fabricates a time-pressure countdown to panic the victim into desperately borrowing money to pay more fees."
+          }
+        ],
+        "title_en": "Telegram Task Scam: Forced to Pay 35 Million 'Account Activation Fee'",
+        "company_en": "Telegram Scam Script (Wrong Transfer Description Excuse)"
       }
     ]
   }
