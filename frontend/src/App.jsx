@@ -23,7 +23,7 @@ export default function App() {
 
   // View Mode State: 'VIEW' (Main Feed Decoder) | 'CUSTOM_INPUT' (Standalone Inspector Form)
   const [viewMode, setViewMode] = useState('VIEW');
-  const [selectedJobId, setSelectedJobId] = useState('job-001');
+  const [selectedJobId, setSelectedJobId] = useState(null);
   const centerColumnRef = useRef(null);
 
   // Lắng nghe sự thay đổi của viewMode hoặc selectedJobId để auto-scroll trên Mobile
@@ -68,13 +68,6 @@ export default function App() {
         if (!isMounted) return;
         if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
           setCaseCategories(res.data);
-
-          // Tự động gán bài đăng đầu tiên làm mặc định nếu chưa chọn
-          const firstCat = res.data[0];
-          const firstJob = (firstCat.jobs && firstCat.jobs.length > 0) ? firstCat.jobs[0] : firstCat;
-          if (firstJob && (firstJob.id || firstJob.jobId)) {
-            setSelectedJobId(firstJob.id || firstJob.jobId);
-          }
         }
       })
       .catch((err) => {
@@ -376,10 +369,27 @@ export default function App() {
                       />
                     </>
                   ) : (
-                    <div className="p-12 text-center text-slate-500 font-sans text-sm bg-white rounded-2xl border border-slate-200/80 shadow-sm shadow-slate-200/50">
-                      {lang === 'en'
-                        ? 'Please select a job post from the sidebar to inspect.'
-                        : 'Vui lòng chọn một bài đăng từ thư viện bên trái để kiểm tra.'}
+                    /* The fallback Empty State when currentJob is null! */
+                    <div className="flex flex-col items-center justify-center p-16 text-center bg-white/60 backdrop-blur-md rounded-3xl border border-dashed border-indigo-200/80 shadow-sm shadow-indigo-100/50">
+                      <div className="w-20 h-20 mb-6 bg-indigo-50 rounded-2xl flex items-center justify-center shadow-inner border border-indigo-100">
+                        <svg className="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-800 mb-2 font-display">
+                        {lang === 'en' ? 'Select a Case Study' : 'Chọn một Case Study'}
+                      </h3>
+                      <p className="text-slate-500 max-w-md text-sm leading-relaxed mb-6">
+                        {lang === 'en' 
+                          ? 'Choose a documented recruitment scam from the sidebar to view detailed analysis, or use the Custom JD Inspector to scan a new post.' 
+                          : 'Vui lòng chọn một ví dụ lừa đảo từ danh sách bên trái để xem phân tích chi tiết, hoặc dùng công cụ Custom Inspector để quét tin tuyển dụng mới.'}
+                      </p>
+                      <button 
+                        onClick={handleOpenCustomInspector}
+                        className="px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-md hover:bg-indigo-700 hover:-translate-y-0.5 transition-all duration-300"
+                      >
+                        {t.navCustomAudit}
+                      </button>
                     </div>
                   )}
                 </motion.div>
