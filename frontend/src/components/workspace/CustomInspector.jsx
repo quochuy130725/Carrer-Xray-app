@@ -91,8 +91,15 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
 
   const handleAnalyze = useCallback(async (e) => {
     e.preventDefault();
-    if ((!jdText || jdText.trim() === '') && !imageBase64) {
-      setErrorMsg(lang === 'en' ? 'Please provide text or an image to inspect.' : t.pastePromptError);
+    const sanitizedText = jdText ? jdText.trim() : '';
+
+    if (!sanitizedText && !imageBase64) {
+      setErrorMsg(lang === 'en' ? "⚠️ Please paste a JD or upload an image before scanning." : "⚠️ Vui lòng dán nội dung JD hoặc tải ảnh lên trước khi quét.");
+      return;
+    }
+
+    if (sanitizedText && sanitizedText.length < 80 && !imageBase64) {
+      setErrorMsg(lang === 'en' ? "⚠️ Text is too short. A real Job Description usually contains more than 80 characters. Please provide full context." : "⚠️ Nội dung quá ngắn. Một tin tuyển dụng thực tế thường dài hơn 80 ký tự. Vui lòng nhập JD đầy đủ.");
       return;
     }
 
