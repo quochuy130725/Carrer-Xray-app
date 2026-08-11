@@ -3,6 +3,8 @@ import { Search, Sparkles, Loader2, AlertCircle, Paperclip, X } from 'lucide-rea
 import { translations } from '../../locales/translations.js';
 import { SpotlightCard } from '../ui/SpotlightCard.jsx';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
   const t = translations[lang] || translations.en;
   const [jdText, setJdText] = useState('');
@@ -98,7 +100,7 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
     setAnalyzing(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/analyze', {
+      const res = await fetch(`${API_URL}/api/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jdText, imageBase64, mimeType, lang })

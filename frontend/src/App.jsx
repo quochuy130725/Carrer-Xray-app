@@ -11,6 +11,8 @@ import { translations } from './locales/translations.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import HeroMascot3D from './components/hero/HeroMascot3D.jsx';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function App() {
   // Global Language State (Default 'en' for MIL international evaluation)
   const [lang, setLang] = useState(() => {
@@ -48,7 +50,7 @@ export default function App() {
     let isMounted = true;
     setInitialLoading(true);
 
-    fetch('http://localhost:5000/api/scan/cases')
+    fetch(`${API_URL}/api/scan/cases`)
       .then((res) => res.json())
       .then((res) => {
         if (!isMounted) return;
@@ -117,7 +119,7 @@ export default function App() {
     setIsDecoding(false);
     setIsScanning(false);
 
-    fetch('http://localhost:5000/api/scan/jd', {
+    fetch(`${API_URL}/api/scan/jd`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       // Gửi đúng language-specific jdText theo lang hiện tại
