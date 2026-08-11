@@ -7,7 +7,7 @@ const MilCard = ({ isTriggered, currentJobId, lang = 'en' }) => {
   const t = translations[lang] || translations.en;
 
   return (
-    <SpotlightCard className="bg-emerald-50/60 text-emerald-950 p-6 rounded-2xl border-emerald-200/70 shadow-sm interactive-card">
+    <SpotlightCard className="bg-emerald-50 text-emerald-950 p-6 rounded-2xl border-emerald-200/70 shadow-sm interactive-card">
       {/* Header Banner */}
       <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-emerald-200/50">
         <div className="p-2 bg-emerald-100/50 rounded-lg border border-emerald-200/50 text-emerald-600">

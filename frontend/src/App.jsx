@@ -298,7 +298,7 @@ export default function App() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left Side: Nested Case Categories & Custom Inspector Trigger Button */}
-          <div className="lg:col-span-3 min-w-[260px] sticky top-20">
+          <div className="lg:col-span-3 min-w-[260px] lg:sticky lg:top-20 lg:z-10 max-lg:static max-lg:mb-6">
             <Sidebar
               cases={caseCategories}
               selectedJobId={selectedJobId}
