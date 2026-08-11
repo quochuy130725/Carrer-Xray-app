@@ -211,3 +211,14 @@ Backend triển khai mô hình Dual-Mode Execution giúp hệ thống hoạt đ�
 - Quản lý biến môi trường trong `.env` (`PORT`, `GEMINI_API_KEY`, `MONGO_URI`).
 - Luôn bật `cors()` cho phép Frontend kết nối từ `http://localhost:5173`.
 - Ghi nhật ký lỗi bằng `logger` thay vì `console.log` thuần.
+
+---
+
+## 7. RECENT ARCHITECTURAL UPGRADES (v1.3)
+* **Universal Dual-Language Schema:** Enforced consistent mapping of `_vi` and `_en` suffixes for job fields, red flags, and benchmarks across JSON seeds, Mongoose models, and AI System Prompts.
+* **Robust Gemini Integration:** Configured `gemini.js` to correctly enforce JSON schemas with explicit language mapping, ensuring AI payloads conform strictly to the Dual-Language structure.
+* **Intelligent Fallback (Safe Parsing):** Extended `fallbackService.js` and `scanController.js` to intelligently fall back to the exact static `jobs.json` mapping if Gemini fails, preventing UI desync.
+* **Deterministic Risk Logic:** Decoupled raw risk level extraction from AI output; the UI and API now re-verify `severeKeywords` to explicitly force `HIGH` risk for scams and `MEDIUM` for mild flags.
+* **Modular Frontend Architecture:** Frontend `src/components/` reorganized into `layout/`, `hero/`, `workspace/`, `mil/`, `ui/` subdirectories — all import paths updated accordingly.
+* **Bilingual Yellow Flag Micro-Copy:** Medium-risk flags now surface constructive verification checkpoints (corporate email check, shift clarification) instead of alarming scam language.
+* **MIL Trademark Compliance:** All "UNESCO" text labels replaced with generic MIL terminology across the frontend translation store and backend prompt instructions.

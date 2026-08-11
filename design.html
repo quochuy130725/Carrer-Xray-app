@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CAREER X-RAY Interactive Learning Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ffdada",
+                        "on-primary-container": "#dad7ff",
+                        "tertiary-fixed-dim": "#ffb3b6",
+                        "on-background": "#171c1f",
+                        "on-surface": "#171c1f",
+                        "secondary": "#565e74",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "outline": "#777587",
+                        "surface-container-low": "#f0f4f8",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#950029",
+                        "surface-container-high": "#e4e9ed",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-tertiary-container": "#ffd0d2",
+                        "surface-container-highest": "#dfe3e7",
+                        "on-primary-fixed": "#0f0069",
+                        "on-tertiary-fixed": "#40000c",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#edf1f5",
+                        "background": "#f6fafe",
+                        "primary-fixed": "#e2dfff",
+                        "surface-tint": "#4d44e3",
+                        "on-tertiary-fixed-variant": "#920028",
+                        "primary": "#3525cd",
+                        "on-surface-variant": "#464555",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#c3c0ff",
+                        "surface-dim": "#d6dade",
+                        "on-secondary-container": "#5c647a",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "outline-variant": "#c7c4d8",
+                        "secondary-fixed": "#dae2fd",
+                        "surface-variant": "#dfe3e7",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eaeef2",
+                        "surface-bright": "#f6fafe",
+                        "on-secondary-fixed": "#131b2e",
+                        "inverse-surface": "#2c3134",
+                        "tertiary-container": "#c20038",
+                        "secondary-container": "#dae2fd",
+                        "primary-container": "#4f46e5",
+                        "error": "#ba1a1a",
+                        "surface": "#f6fafe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .highlight-yellow {
+            background-color: rgba(250, 204, 21, 0.2);
+            border-bottom: 2px solid rgba(250, 204, 21, 0.8);
+        }
+        .highlight-red {
+            background-color: rgba(186, 26, 26, 0.1);
+            border-bottom: 2px solid rgba(186, 26, 26, 0.6);
+        }
+        
+        /* Interactive Card Hover */
+        .interactive-card {
+            transition: all 0.2s ease-in-out;
+            border: 1px solid #e2e8f0;
+        }
+        .interactive-card:hover {
+            border-color: #3525cd;
+            box-shadow: 0px 10px 25px -5px rgba(15, 23, 42, 0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Subtle grid background for the technical feel */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+                              linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased pt-16">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop h-16 bg-surface/90 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-6">
+<div class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">radar</span>
+                CAREER X-RAY
+            </div>
+<div class="hidden md:flex items-center gap-2 px-3 py-1 bg-surface-container-low rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">school</span>
+<span class="font-label-sm text-label-sm text-secondary">UNESCO MIL Educational Edition</span>
+</div>
+</div>
+<div class="hidden md:flex items-center gap-8 h-full">
+<a class="h-full flex items-center text-primary font-bold border-b-2 border-primary hover:text-primary transition-colors opacity-80" href="#">
+<span class="font-label-sm text-label-sm">Lab</span>
+</a>
+<a class="h-full flex items-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="font-label-sm text-label-sm">Learning</span>
+</a>
+<a class="h-full flex items-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="font-label-sm text-label-sm">Scam Library</span>
+</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant cursor-pointer hover:text-primary">EN | VI</span>
+</div>
+<button class="px-4 py-2 bg-surface-container-highest text-on-surface font-label-sm text-label-sm rounded-full border border-outline-variant hover:bg-outline-variant transition-colors">
+                Practice Mode
+            </button>
+<div class="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-sm text-label-sm text-primary">Student Active</span>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Inspection Lab (60%) -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Header -->
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Interactive Learning Lab</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Analyze suspicious job postings to build media and information literacy skills.</p>
+</div>
+<!-- Dropzone Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 flex flex-col items-center justify-center min-h-[200px] border-dashed bg-grid-pattern relative overflow-hidden group hover:border-primary transition-colors cursor-pointer">
+<div class="absolute inset-0 bg-surface/80 group-hover:bg-surface/60 transition-colors z-0"></div>
+<div class="z-10 flex flex-col items-center text-center gap-4 w-full">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined text-[32px]">upload_file</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Drag &amp; Drop Job Post</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Paste text, URL, or upload a screenshot to begin analysis.</p>
+</div>
+<button class="mt-4 px-6 py-3 bg-primary text-on-primary font-label-sm text-label-sm rounded-lg flex items-center gap-2 hover:bg-primary-fixed-variant transition-colors shadow-sm border-t border-white/20 w-full sm:w-auto justify-center">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+                        RUN X-RAY DIAGNOSTIC
+                    </button>
+</div>
+</div>
+<!-- Decoded Job Reader Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden flex-1 flex flex-col">
+<div class="bg-surface-container-low border-b border-outline-variant p-4 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">document_scanner</span>
+<h3 class="font-label-sm text-label-sm text-on-surface">Decoded Job Reader</h3>
+</div>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-container rounded text-xs font-mono text-secondary">TEXT VIEW</span>
+<span class="px-2 py-1 bg-white border border-outline-variant rounded text-xs font-mono text-on-surface cursor-pointer">X-RAY VIEW</span>
+</div>
+</div>
+<div class="p-6 md:p-8 font-body-md text-body-md text-on-surface leading-relaxed flex-1 bg-white relative">
+<!-- Faint watermark -->
+<div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
+<span class="material-symbols-outlined text-[200px]">warning</span>
+</div>
+<h2 class="font-headline-md text-headline-md mb-4 border-b pb-2">URGENT HIRING: Data Entry Specialist (Remote)</h2>
+<p class="mb-4">
+                        We are a leading international tech firm looking for highly motivated individuals to join our team immediately. 
+                        <span class="highlight-yellow cursor-help relative group" title="Common hook phrase. Check company registry.">Work from home</span> and enjoy flexible hours. 
+                        No prior experience required! We provide comprehensive training.
+                    </p>
+<p class="mb-4 font-bold">Compensation &amp; Benefits:</p>
+<ul class="list-disc pl-5 mb-4 space-y-2">
+<li>Earn up to <span class="highlight-red cursor-help group" title="Unrealistic salary for entry-level. Major red flag.">$500/day</span> based on simple tasks.</li>
+<li>Weekly payouts directly to your crypto wallet or bank account.</li>
+<li>Immediate start date available.</li>
+</ul>
+<p class="mb-4">
+<span class="font-bold">Requirements:</span> Must be 18+, have a smartphone, and be willing to follow instructions exactly. 
+                    </p>
+<p class="mb-4 p-3 bg-error/5 border-l-4 border-error rounded-r text-sm">
+<span class="highlight-red cursor-help group" title="Advanced fee fraud indicator. Never pay to work.">Note: A small, one-time fully refundable deposit of $50 is required</span> to set up your secure workstation software. 
+                    </p>
+<p>
+                        To apply, message our HR manager directly on Telegram: @GlobalTechHR_FastHiring
+                    </p>
+</div>
+</div>
+</div>
+<!-- Right Column: Learning & Breakdown (40%) -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- Safety Score Index -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 shadow-sm flex flex-col items-center justify-center relative overflow-hidden">
+<div class="absolute top-4 left-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">speed</span>
+<span class="font-label-sm text-label-sm text-secondary">Safety Score Index</span>
+</div>
+<div class="mt-8 mb-4 relative w-32 h-32 flex items-center justify-center">
+<!-- Decorative SVG Ring -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#e4e9ed" stroke-width="8"></circle>
+<circle class="text-tertiary-container" cx="50" cy="50" fill="none" r="45" stroke="#c20038" stroke-dasharray="283" stroke-dashoffset="200" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg text-display-lg text-on-surface leading-none">28</span>
+<span class="text-xs font-mono text-secondary">/100</span>
+</div>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 bg-error/10 text-error rounded-full border border-error/20">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+<span class="font-label-sm text-label-sm font-bold">Amber / Caution Status</span>
+</div>
+<p class="text-sm text-center text-on-surface-variant mt-3 max-w-[250px]">Multiple high-risk indicators detected. High probability of employment scam.</p>
+</div>
+<!-- Unpacked Traps -->
+<div class="flex flex-col gap-3">
+<h3 class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider mb-1">Unpacked Traps (2)</h3>
+<!-- Flashcard 1 -->
+<div class="interactive-card bg-surface-container-lowest rounded-xl p-4 flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="bg-error/10 text-error px-2 py-1 rounded text-xs font-mono border border-error/20 self-start shrink-0">FLAG: RED</div>
+<p class="font-body-sm text-sm text-on-surface italic line-clamp-2">"...deposit of $50 is required to set up your secure workstation..."</p>
+</div>
+<div class="bg-surface-container-low rounded p-3 border border-outline-variant border-l-4 border-l-error">
+<p class="font-label-sm text-label-sm text-on-surface mb-1">Mechanism: Advance Fee Fraud</p>
+<p class="text-sm text-on-surface-variant">Scammers invent fake "setup fees" or "equipment costs". Legitimate employers never charge candidates to start working.</p>
+</div>
+<div class="flex items-center gap-2 text-primary mt-1 cursor-pointer hover:underline">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span class="font-label-sm text-label-sm">How to verify this</span>
+</div>
+</div>
+<!-- Flashcard 2 -->
+<div class="interactive-card bg-surface-container-lowest rounded-xl p-4 flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-mono border border-yellow-200 self-start shrink-0">FLAG: AMBER</div>
+<p class="font-body-sm text-sm text-on-surface italic line-clamp-2">"Earn up to $500/day based on simple tasks."</p>
+</div>
+<div class="bg-surface-container-low rounded p-3 border border-outline-variant border-l-4 border-l-yellow-500">
+<p class="font-label-sm text-label-sm text-on-surface mb-1">Mechanism: Too Good To Be True</p>
+<p class="text-sm text-on-surface-variant">Unrealistic compensation for low-skill tasks is a primary lure used to override critical thinking.</p>
+</div>
+</div>
+</div>
+<!-- Competency Tracker -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 shadow-sm mt-auto">
+<div class="flex items-center gap-2 mb-4">
+<img alt="UNESCO Logo" class="h-5 opacity-70" data-alt="UNESCO blue temple logo with acronym text" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_PZQW7CGeokugOtBbvtXWaQztsG4SLijurHcktMjdnFVBhw6_XD_6MSaJHRNCISTSO8wC8VStSfZ0UNnA2oJVcZBPjB1nxiDbZ3XrYxIazv8WaVSywSjZ1LRvnSC7ljmSf072udx2SJlJDchL6xZLm1EkDFC4ddD7rZNb-wLyCZxhJS0L4n_5bavVrknvtdURadIL31b019xvPrVS4BFF3uEjrpz4MDy3-ckltN1qB6cTPphucjVD_Q"/>
+<h3 class="font-label-sm text-label-sm text-on-surface">MIL Competency Tracker</h3>
+</div>
+<div class="space-y-3">
+<label class="flex items-start gap-3 cursor-pointer group">
+<input checked="" class="mt-1 rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<div>
+<p class="font-body-md text-sm text-on-surface group-hover:text-primary transition-colors">Identify unrealistic compensation claims</p>
+</div>
+</label>
+<label class="flex items-start gap-3 cursor-pointer group">
+<input checked="" class="mt-1 rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<div>
+<p class="font-body-md text-sm text-on-surface group-hover:text-primary transition-colors">Recognize advance fee requests</p>
+</div>
+</label>
+<label class="flex items-start gap-3 cursor-pointer group">
+<input class="mt-1 rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<div>
+<p class="font-body-md text-sm text-on-surface group-hover:text-primary transition-colors">Verify company domain / contact method</p>
+</div>
+</label>
+</div>
+<!-- Progress Bar -->
+<div class="mt-5">
+<div class="flex justify-between text-xs text-on-surface-variant mb-1">
+<span>Module Progress</span>
+<span>66%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 66%"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Carousel: Real-world Scam Cases -->
+<section class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop pb-16">
+<div class="border-t border-outline-variant pt-8">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Real-world Scam Cases</h2>
+<p class="font-body-md text-sm text-on-surface-variant mt-1">Study documented examples from the MIL database.</p>
+</div>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar">
+<!-- Case 1 -->
+<div class="min-w-[280px] md:min-w-[320px] interactive-card bg-surface-container-lowest rounded-xl p-5 snap-start flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="px-2 py-1 bg-surface-container rounded text-xs font-mono text-secondary">CASE 01</span>
+<span class="material-symbols-outlined text-secondary">bookmark_border</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface mb-1">The Deposit Trap</h4>
+<p class="text-sm text-on-surface-variant line-clamp-2">Candidate pays for "workstation setup" and employer disappears.</p>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<a class="text-primary font-label-sm text-xs flex items-center gap-1 hover:underline" href="#">
+                            REVIEW CASE <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Case 2 -->
+<div class="min-w-[280px] md:min-w-[320px] interactive-card bg-surface-container-lowest rounded-xl p-5 snap-start flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="px-2 py-1 bg-surface-container rounded text-xs font-mono text-secondary">CASE 02</span>
+<span class="material-symbols-outlined text-secondary">bookmark_border</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface mb-1">Telegram Task Scam</h4>
+<p class="text-sm text-on-surface-variant line-clamp-2">Users paid small amounts initially to build trust, then asked for large "VIP upgrades".</p>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<a class="text-primary font-label-sm text-xs flex items-center gap-1 hover:underline" href="#">
+                            REVIEW CASE <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Case 3 -->
+<div class="min-w-[280px] md:min-w-[320px] interactive-card bg-surface-container-lowest rounded-xl p-5 snap-start flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="px-2 py-1 bg-surface-container rounded text-xs font-mono text-secondary">CASE 03</span>
+<span class="material-symbols-outlined text-secondary">bookmark_border</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface mb-1">Fake Recruiter Spoofing</h4>
+<p class="text-sm text-on-surface-variant line-clamp-2">Scammers impersonating real HR staff from major tech companies using lookalike domains.</p>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<a class="text-primary font-label-sm text-xs flex items-center gap-1 hover:underline" href="#">
+                            REVIEW CASE <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-base px-margin-desktop flex flex-col md:flex-row justify-between items-center bg-surface-container-lowest border-t border-outline-variant">
+<div class="font-body-md text-body-md font-bold text-on-surface mb-4 md:mb-0">
+            © 2024 UNESCO MIL Educational Edition. Designed for Career X-Ray.
+        </div>
+<div class="flex gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-90 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-90 hover:opacity-100" href="#">MIL Guidelines</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-90 hover:opacity-100" href="#">Terms of Use</a>
+</div>
+</footer>
+<style>
+        /* Hide scrollbar for carousel but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

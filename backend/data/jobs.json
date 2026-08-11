@@ -8,6 +8,7 @@
     "jobs": [
       {
         "id": "job-001",
+        "riskLevel": "HIGH",
         "title": "Thực Tập Sinh Truyền Thông (Hybrid - Up to 15.000.000 VNĐ)",
         "company": "Công ty Cổ phần Tập đoàn Media X (Dấu hiệu mạo danh)",
         "time": "Vừa xong",
@@ -73,6 +74,7 @@
       },
       {
         "id": "job-008",
+        "riskLevel": "HIGH",
         "title": "Tuyển Nhân Viên Kho Soạn Hàng (Lương 9.800.000 VNĐ)",
         "company": "Tài khoản cá nhân (Dung Hà - Tuyển tự do)",
         "time": "37 phút trước",
@@ -119,6 +121,7 @@
       },
       {
         "id": "job-009",
+        "riskLevel": "HIGH",
         "title": "Việc Làm Online Tại Nhà: Gia Công Cắt Mác May Mặc (Mạo Danh Việt Tiến)",
         "company": "Việt Tiến Gia Công May Mặc (Tin nhắn mạo danh)",
         "time": "12:20",
@@ -175,6 +178,7 @@
       },
       {
         "id": "job-010",
+        "riskLevel": "HIGH",
         "title": "Tuyển Nhân Viên Rạp Chiếu Phim TP.HCM (25k-35k/h)",
         "company": "Tuyển Dụng Rạp Phim TP.HCM (Fanpage mạo danh)",
         "time": "17 tháng 6",
@@ -220,6 +224,7 @@
     "jobs": [
       {
         "id": "job-002",
+        "riskLevel": "MEDIUM",
         "title": "Nhân Viên Marketing Multi-Task (Thu Nhập Không Giới Hạn)",
         "company": "AMRITA (Ngọc Lan Hương)",
         "time": "2 tháng 8 lúc 12:38",
@@ -284,6 +289,7 @@
     "jobs": [
       {
         "id": "job-003",
+        "riskLevel": "SAFE",
         "title": "FPT Software Tuyển Dụng Junior – Fresher – OJT – Intern",
         "company": "FPT Software HCM (Xác thực chính thức)",
         "time": "11 tháng 5",
@@ -315,6 +321,7 @@
       },
       {
         "id": "job-011",
+        "riskLevel": "SAFE",
         "title": "Tuyển Dụng IT: .NET / BA / Manual QC / Angular / Java",
         "company": "Saigon Technology (Xác thực chính thức)",
         "time": "3 tháng 8",
@@ -348,6 +355,7 @@
     "jobs": [
       {
         "id": "job-004",
+        "riskLevel": "HIGH",
         "title": "Tuyển CTV Gõ Truyện Tiểu Thuyết (35k-100k/trang)",
         "company": "CTV5555 (Dàn Bot Spammer Crowd Seeding)",
         "time": "9 tháng 8",
@@ -423,6 +431,7 @@
     "jobs": [
       {
         "id": "job-005",
+        "riskLevel": "HIGH",
         "title": "Bẫy Lừa Đảo Nhiệm Vụ Telegram: Ép Đóng 'Phí Kích Hoạt Tài Khoản' 35 Triệu",
         "company": "Kịch bản lừa đảo Telegram (Bắt lỗi chuyển khoản sai nội dung)",
         "time": "21:32",

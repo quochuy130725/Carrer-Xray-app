@@ -8,12 +8,12 @@ const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-flash-lite-latest';
 
 // Kiểm tra xem GEMINI_API_KEY đã được cấu hình hợp lệ chưa
 const isGeminiConfigured = () => {
-  return Boolean(
-    apiKey &&
-    apiKey.trim() !== '' &&
-    !apiKey.includes('your_') &&
-    !apiKey.includes('_here')
-  );
+    return Boolean(
+        apiKey &&
+        apiKey.trim() !== '' &&
+        !apiKey.includes('your_') &&
+        !apiKey.includes('_here')
+    );
 };
 
 module.exports = { ai, Type, GEMINI_MODEL, isGeminiConfigured };

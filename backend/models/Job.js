@@ -37,6 +37,7 @@ const SingleJobSchema = new mongoose.Schema({
   marketBenchmark: { type: String },
   marketBenchmark_vi: { type: String },
   marketBenchmark_en: { type: String },
+  riskLevel: { type: String },
   // Dual-Data: bilingual red flags arrays
   redFlags: [RedFlagSchema],
   redFlags_vi: [RedFlagSchema],
@@ -68,6 +69,7 @@ const JobSchema = new mongoose.Schema({
   marketBenchmark: { type: String },
   marketBenchmark_vi: { type: String },
   marketBenchmark_en: { type: String },
+  riskLevel: { type: String },
   redFlags: [RedFlagSchema],
   redFlags_vi: [RedFlagSchema],
   redFlags_en: [RedFlagSchema],

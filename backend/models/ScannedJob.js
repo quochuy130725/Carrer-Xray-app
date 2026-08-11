@@ -9,7 +9,8 @@ const RedFlagSchema = new mongoose.Schema({
 const ScannedJobSchema = new mongoose.Schema({
   title: { type: String, default: 'Custom Inspected JD' },
   company: { type: String, default: 'User Submitted Content' },
-  jdText: { type: String, required: true },
+  jdText: { type: String, default: '' },      // Optional: empty khi scan image-only
+  hasImage: { type: Boolean, default: false }, // True khi user upload ảnh
   redFlags: [RedFlagSchema],
   riskLevel: {
     type: String,

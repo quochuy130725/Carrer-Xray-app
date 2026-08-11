@@ -3,9 +3,34 @@ const { getFallbackJobData } = require('../services/fallbackService');
 const { isGeminiConfigured } = require('../config/gemini');
 const { readJobsJson } = require('../utils/jsonReader');
 const { analyzeWithRegex } = require('../services/regexService');
+const { compressImageForGemini } = require('../utils/imageCompressor');
 const Job = require('../models/Job');
 const ScannedJob = require('../models/ScannedJob');
 const logger = require('../utils/logger');
+
+/**
+ * Sắp xếp flags theo độ ưu tiên đa dạng — đảm bảo thứ tự hiển thị nhất quán bất kể AI trả về theo thứ tự nào.
+ * Priority 0 (hiển trước nhất): Scam cứng — cọc tiền, telegram, zalo, đơn hàng giả
+ * Priority 1: Mâu thuẫn thông tin liên lạc — email/địa chỉ khả nghi
+ * Priority 2: Ràng buộc hợp đồng — đào tạo, bồi thường
+ * Priority 3 (hiển sau cùng): Cảnh báo khác
+ */
+const FLAG_PRIORITY = [
+  /(deposit|cọc|tiền cọc|telegram|zalo|fake|lừa đảo|scam|order|commission)/i,  // 0 — scam cứng
+  /(email|contact|mâu thuẫn|inconsistent|address|địa chỉ|branch|chi nhánh)/i,     // 1 — contact mismatch
+  /(binding|training|đào tạo|ràng buộc|bồi thường|bond)/i,                     // 2 — contract terms
+];
+
+const getFlagPriority = (flag = {}) => {
+  const cat = (flag.category_en || flag.category_vi || flag.category || '');
+  for (let i = 0; i < FLAG_PRIORITY.length; i++) {
+    if (FLAG_PRIORITY[i].test(cat)) return i;
+  }
+  return FLAG_PRIORITY.length; // lowest priority for generic caution
+};
+
+const sortFlagsByPriority = (flags) =>
+  [...flags].sort((a, b) => getFlagPriority(a) - getFlagPriority(b));
 
 // Controller Lấy danh sách Case Studies (Ưu tiên từ MongoDB Atlas / Local MongoDB)
 // Smart Dual-Data Fallback: nếu MongoDB data thiếu trường _vi/_en → dùng local jobs.json mới nhất
@@ -73,53 +98,163 @@ exports.seedDatabase = async (req, res, next) => {
 
 // Controller Phân tích bài đăng tùy chỉnh POST /api/analyze & Lưu Audit Log vào MongoDB Atlas
 exports.analyzeCustomJD = async (req, res, next) => {
-  const { jdText, lang = 'en' } = req.body;
+  const { imageBase64, mimeType, lang = 'en' } = req.body;
+  let { jdText } = req.body;
   const isEn = lang === 'en';
 
   try {
-    if (!jdText || jdText.trim() === '') {
+    const hasText = jdText && jdText.trim() !== '';
+    if (!hasText && !imageBase64) {
       return res.status(400).json({
         success: false,
-        message: isEn ? 'Please provide job description text to inspect.' : 'Vui lòng cung cấp nội dung bài đăng tuyển dụng để kiểm tra.'
+        message: isEn ? 'Please provide job description text or an image to inspect.' : 'Vui lòng cung cấp nội dung hoặc hình ảnh bài đăng để kiểm tra.'
       });
     }
 
     let redFlags = [];
+    let redFlags_vi = [];
+    let redFlags_en = [];
     let marketBenchmark = '';
+    let marketBenchmark_vi = '';
+    let marketBenchmark_en = '';
+    let jdText_vi = '';
+    let jdText_en = '';
     let riskLevel = 'SAFE';
 
-    // 1. Tối Ưu Tốc Độ Siêu Tốc: Quét Regex Engine Trước (< 2ms)
-    const regexFlags = analyzeWithRegex(jdText, lang);
-    if (regexFlags.length > 0) {
-      redFlags = regexFlags;
-      riskLevel = regexFlags.length >= 2 ? 'HIGH' : 'MEDIUM';
-    } else if (isGeminiConfigured()) {
-      // 2. Nếu Regex chưa thấy bẫy, dùng Gemini AI quét ngữ nghĩa chuyên sâu
-      try {
-        const aiResult = await analyzeJDWithGemini(jdText, lang);
-        redFlags = aiResult.redFlags || [];
-        marketBenchmark = aiResult.marketBenchmark || '';
-        riskLevel = aiResult.riskLevel || 'SAFE';
-      } catch (err) {
-        logger.warn('Gemini AI failed during custom analysis:', err.message);
+    // 1. Nếu có hình ảnh, BẮT BUỘC dùng Gemini vì Regex không đọc được ảnh
+    if (imageBase64) {
+      if (isGeminiConfigured()) {
+        try {
+          // 🗜️ Nén ảnh trước khi gửi lên Gemini để tăng tốc độ xử lý
+          const compressed = await compressImageForGemini(imageBase64, mimeType);
+          if (!compressed.skipped) {
+            logger.info(`🗜️ Image compressed: ${compressed.originalKB}KB → ${compressed.compressedKB}KB (saved ${compressed.originalKB - compressed.compressedKB}KB)`);
+          }
+
+          const aiResult = await analyzeJDWithGemini(jdText, lang, compressed.base64, compressed.mimeType);
+
+          const rawFlags = sortFlagsByPriority(aiResult.redFlags || []);
+          redFlags_vi = rawFlags.map(flag => ({
+            phrase: flag.phrase_vi || flag.phrase_en || flag.phrase || '',
+            category: flag.category_vi || flag.category || 'LƯU Ý',
+            reason: flag.reason_vi
+          }));
+          redFlags_en = rawFlags.map(flag => ({
+            phrase: flag.phrase_en || flag.phrase_vi || flag.phrase || '',
+            category: flag.category_en || flag.category || 'CAUTION',
+            reason: flag.reason_en
+          }));
+          redFlags = isEn ? redFlags_en : redFlags_vi;
+
+          marketBenchmark_vi = aiResult.marketBenchmark?.text_vi || '';
+          marketBenchmark_en = aiResult.marketBenchmark?.text_en || '';
+          marketBenchmark = isEn ? marketBenchmark_en : marketBenchmark_vi;
+
+          // Tước quyền AI: chấm risk theo keyword bẫy nghiêm trọng
+          const severeScamKeywords = [
+            'GÕ TRUYỆN', 'GÕ VĂN BẢN', 'TIỂU THUYẾT', 'CÀNH/TRANG', '35K-100K', 
+            'INBOX LIỀN TAY', 'INBOX ZALO', 'TELEGRAM', 'NẠP TIỀN', 'CỌC', 
+            'NHẬP LIỆU AT HOME', 'NHIỆM VỤ', 'CHIẾN DỊCH'
+          ];
+        
+          riskLevel = "SAFE";
+          if (rawFlags && rawFlags.length > 0) {
+            const isSevere = rawFlags.some(flag => {
+              const textToSearch = `${flag.phrase_vi} ${flag.phrase_en} ${flag.reason_vi} ${flag.reason_en} ${flag.category_vi} ${flag.category_en}`.toUpperCase();
+              return severeScamKeywords.some(kw => textToSearch.includes(kw));
+            });
+            
+            riskLevel = isSevere ? "HIGH" : "MEDIUM";
+          }
+
+          jdText_vi = aiResult.jdText_vi || '';
+          jdText_en = aiResult.jdText_en || '';
+
+          // Nếu user chỉ nộp ảnh, lấy text do AI OCR được đắp vào jdText để UI có dữ liệu hiển thị
+          if (!hasText) {
+            jdText = isEn ? jdText_en : jdText_vi;
+          }
+        } catch (err) {
+          logger.warn('Gemini AI failed during multimodal analysis:', err.message);
+          // Fallback Engine: Nếu chỉ nộp ảnh mà Gemini sập -> throw 500 ngay lập tức, bỏ qua Regex
+          if (!hasText) {
+            return res.status(500).json({
+              success: false,
+              message: isEn ? 'Image analysis failed due to high traffic. Please try again later.' : 'Phân tích ảnh thất bại do hệ thống quá tải. Vui lòng thử lại sau.'
+            });
+          }
+        }
+      } else if (!hasText) {
+        return res.status(500).json({
+          success: false,
+          message: isEn ? 'AI Scanning is currently unavailable. Please provide text for offline analysis.' : 'Tính năng quét ảnh AI đang gián đoạn. Vui lòng nhập văn bản để phân tích ngoại tuyến.'
+        });
+      }
+    }
+
+    // 2. Nếu không có ảnh, hoặc Gemini phân tích ảnh thất bại nhưng CÓ text -> Chạy Regex siêu tốc
+    if (redFlags.length === 0 && hasText) {
+      const regexFlags = analyzeWithRegex(jdText, lang);
+      if (regexFlags.length > 0) {
+        redFlags = regexFlags;
+        if (isEn) {
+          redFlags_en = regexFlags;
+        } else {
+          redFlags_vi = regexFlags;
+        }
+        riskLevel = regexFlags.length >= 2 ? 'HIGH' : 'MEDIUM';
+      } else if (!imageBase64 && isGeminiConfigured()) {
+        // 3. Nếu Regex không bắt được lỗi và chưa từng gọi Gemini -> Dùng Gemini quét ngữ nghĩa text
+        try {
+          const aiResult = await analyzeJDWithGemini(jdText, lang);
+
+          const rawFlags = sortFlagsByPriority(aiResult.redFlags || []);
+          redFlags_vi = rawFlags.map(flag => ({
+            phrase: flag.phrase_vi || flag.phrase_en || flag.phrase || '',
+            category: flag.category_vi || flag.category || 'LƯU Ý',
+            reason: flag.reason_vi
+          }));
+          redFlags_en = rawFlags.map(flag => ({
+            phrase: flag.phrase_en || flag.phrase_vi || flag.phrase || '',
+            category: flag.category_en || flag.category || 'CAUTION',
+            reason: flag.reason_en
+          }));
+          redFlags = isEn ? redFlags_en : redFlags_vi;
+
+          marketBenchmark_vi = aiResult.marketBenchmark?.text_vi || '';
+          marketBenchmark_en = aiResult.marketBenchmark?.text_en || '';
+          marketBenchmark = isEn ? marketBenchmark_en : marketBenchmark_vi;
+
+          // Tước quyền AI: chấm risk theo keyword bẫy nghiêm trọng
+          const SEVERE_KEYWORDS = ['CỌC', 'DEPOSIT', 'TELEGRAM', 'ZALO', 'NHIỆM VỤ', 'TASK', 'THU PHÍ', 'NẠP TIỀN', 'FEE', 'UPFRONT', 'TRANSFER', 'WIRE'];
+          const hasSevereTrap = rawFlags.some(flag => {
+            const cat = (flag.category_en || flag.category_vi || flag.category || '').toUpperCase();
+            const ph = (flag.phrase_en || flag.phrase_vi || flag.phrase || '').toUpperCase();
+            return SEVERE_KEYWORDS.some(kw => cat.includes(kw) || ph.includes(kw));
+          });
+          riskLevel = rawFlags.length === 0 ? 'SAFE' : (hasSevereTrap ? 'HIGH' : 'MEDIUM');
+
+          jdText_vi = aiResult.jdText_vi || '';
+          jdText_en = aiResult.jdText_en || '';
+        } catch (err) {
+          logger.warn('Gemini AI failed during custom analysis:', err.message);
+        }
       }
     }
 
     // 3. Tạo Benchmark đối chiếu thị trường nếu chưa có
-    if (!marketBenchmark) {
+    if (!marketBenchmark_vi || !marketBenchmark_en) {
       if (riskLevel === 'HIGH') {
-        marketBenchmark = isEn
-          ? '🚨 HIGH RISK WARNING: This post contains multiple severe red flags under Labor Code 2019. Do NOT transfer funds or provide personal banking details.'
-          : '🚨 CẢNH BÁO BÁO ĐỘNG ĐỎ: Bài đăng chứa nhiều dấu hiệu lừa đảo nghiêm trọng theo Điều 17 Bộ Luật Lao Động 2019. TUYỆT ĐỐI KHÔNG chuyển khoản giữ chỗ hoặc liên kết tài khoản ngân hàng.';
+        marketBenchmark_en = '🚨 HIGH RISK WARNING: This post contains multiple severe red flags under Labor Code 2019. Do NOT transfer funds or provide personal banking details.';
+        marketBenchmark_vi = '🚨 CẢNH BÁO BÁO ĐỘNG ĐỎ: Bài đăng chứa nhiều dấu hiệu lừa đảo nghiêm trọng theo Điều 17 Bộ Luật Lao Động 2019. TUYỆT ĐỐI KHÔNG chuyển khoản giữ chỗ hoặc liên kết tài khoản ngân hàng.';
       } else if (riskLevel === 'MEDIUM') {
-        marketBenchmark = isEn
-          ? '⚠️ CAUTION REQUIRED: Unofficial communication channels detected. Verify official company domain and tax registration code before proceeding.'
-          : '⚠️ CẢNH BÁO RỦI RO: Có dấu hiệu liên hệ mập mờ qua kênh cá nhân. Cần kiểm tra Mã Số Thuế và tên miền website chính thức trước khi nộp CV.';
+        marketBenchmark_en = '⚠️ CAUTION REQUIRED: Unofficial communication channels detected. Verify official company domain and tax registration code before proceeding.';
+        marketBenchmark_vi = '⚠️ CẢNH BÁO RỦI RO: Có dấu hiệu liên hệ mập mờ qua kênh cá nhân. Cần kiểm tra Mã Số Thuế và tên miền website chính thức trước khi nộp CV.';
       } else {
-        marketBenchmark = isEn
-          ? '🟢 TRANSPARENT POST: No malicious keywords or upfront deposit traps detected.'
-          : '🟢 BÀI ĐĂNG ĐẠT CHUẨN MINH BẠCH: Không phát hiện từ khóa lừa cọc hay dấu hiệu bóc lột.';
+        marketBenchmark_en = '🟢 TRANSPARENT POST: No malicious keywords or upfront deposit traps detected.';
+        marketBenchmark_vi = '🟢 BÀI ĐĂNG ĐẠT CHUẨN MINH BẠCH: Không phát hiện từ khóa lừa cọc hay dấu hiệu bóc lột.';
       }
+      marketBenchmark = isEn ? marketBenchmark_en : marketBenchmark_vi;
     }
 
     // 4. Lưu Audit Document vào MongoDB Atlas bất đồng bộ (Non-blocking < 1ms)
@@ -127,36 +262,48 @@ exports.analyzeCustomJD = async (req, res, next) => {
     ScannedJob.create({
       title: isEn ? 'Inspected Custom JD' : 'Bài Đăng Kiểm Tra Tùy Chỉnh',
       company: isEn ? 'User Submitted Content' : 'Nội Dung Người Dùng Nhập',
-      jdText,
+      jdText: jdText || '',       // Fallback empty string khi image-only
+      hasImage: !!imageBase64,    // Đánh dấu audit log có kèm ảnh
       redFlags,
       riskLevel,
       marketBenchmark,
       lang
+
     }).then((doc) => {
       logger.info(`Audit log saved into scanned_jobs MongoDB collection ID: ${doc._id}`);
     }).catch((dbErr) => {
       logger.warn('Failed to persist audit log into MongoDB Atlas:', dbErr.message);
     });
 
+    // isImageScan dùng để xác định ban đầu user có nộp text hay không
+    const isImageScan = !!imageBase64 && !hasText;
     return res.json({
       success: true,
       data: {
         id: customId,
-        title: isEn ? 'Inspected Custom Job Post' : 'Bài Đăng Tuyển Dụng Vừa Kiểm Tra',
-        company: isEn ? 'Custom Inspected Content' : 'Nội Dung Kiểm Tra Tùy Chỉnh',
+        title: isImageScan ? '📸 Kết Quả Quét Ảnh AI' : 'Kết Quả Quét AI',
+        title_en: isImageScan ? '📸 AI Image Scan Result' : 'AI Scan Result',
+        company: 'Hệ thống CAREER X-RAY',
+        company_en: 'CAREER X-RAY System',
         time: isEn ? 'Just now' : 'Vừa xong',
         avatarUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=CustomInspectorResult',
-        jdText,
+        jdText: jdText || '',          // '' thay vì undefined để tránh falsy check sai
+        jdText_vi: jdText_vi || jdText || '',
+        jdText_en: jdText_en || jdText || '',
+        hasImage: isImageScan,
         redFlags,
+        redFlags_vi,
+        redFlags_en,
         riskLevel,
         marketBenchmark,
+        marketBenchmark_vi,
+        marketBenchmark_en,
         comments: [
           {
             "id": "audit_c1",
             "userName": "UNESCO MIL Assistant",
-            "text": isEn
-              ? "Always verify corporate tax codes and NEVER make upfront deposits!"
-              : "Luôn kiểm tra mã số thuế doanh nghiệp và KHÔNG BAO GIỜ đóng phí cọc!",
+            "text_vi": "Luôn kiểm tra mã số thuế doanh nghiệp và KHÔNG BAO GIỜ đóng phí cọc!",
+            "text_en": "Always verify corporate tax codes and NEVER make upfront deposits!",
             "isBot": false
           }
         ]
@@ -184,7 +331,7 @@ exports.scanJD = async (req, res, next) => {
         const found = cat.jobs?.find((j) => j.id === id);
         if (found) return found;
       }
-    } catch (_) {}
+    } catch (_) { }
     return await getFallbackJobData(id);
   };
 
