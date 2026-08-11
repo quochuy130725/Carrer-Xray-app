@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Navbar from './components/layout/Navbar.jsx';
 import Sidebar from './components/layout/Sidebar.jsx';
 import JobCard from './components/workspace/JobCard.jsx';
@@ -23,6 +23,16 @@ export default function App() {
 
   // View Mode State: 'VIEW' (Main Feed Decoder) | 'CUSTOM_INPUT' (Standalone Inspector Form)
   const [viewMode, setViewMode] = useState('VIEW');
+  const inspectorRef = useRef(null);
+
+  useEffect(() => {
+    if (viewMode === 'CUSTOM_INPUT') {
+      const timer = setTimeout(() => {
+        inspectorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [viewMode]);
 
   const [caseCategories, setCaseCategories] = useState([]);
   const [selectedJobId, setSelectedJobId] = useState('job-001');
@@ -306,11 +316,13 @@ export default function App() {
               {viewMode === 'CUSTOM_INPUT' ? (
                 /* Mode 1: Custom Inspector Standalone Input Form ONLY */
                 <motion.div 
+                  ref={inspectorRef}
                   key="custom-input"
                   initial={{ opacity: 0, y: 15, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -15, scale: 0.98 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="relative z-[999] bg-white rounded-2xl shadow-xl"
                 >
                   <CustomInspector
                     lang={lang}
@@ -375,7 +387,7 @@ export default function App() {
           </div>
 
           {/* Right Side: Educational MIL Panel & Widgets */}
-          <div className="lg:col-span-3 min-w-[260px] space-y-6 sticky top-20 h-max max-lg:z-0 lg:z-10">
+          <div className="lg:col-span-3 min-w-[260px] space-y-6 lg:sticky lg:top-20 h-max max-lg:static max-lg:z-0 max-lg:mt-8 lg:z-10">
             <MilCard
               isTriggered={viewMode === 'VIEW' ? true : isDecoding}
               currentJobId={viewMode === 'VIEW' ? selectedJobId : 'custom'}
