@@ -71,7 +71,7 @@ const Sidebar = ({ cases = [], selectedJobId, onSelectJob, onOpenCustomInspector
               {/* Category Level 1 Header */}
               <button
                 onClick={() => toggleExpandCase(cat.caseId)}
-                className="w-full p-3 flex items-center justify-between text-left transition-colors hover:bg-slate-50/80"
+                className="w-full p-3 flex items-center justify-between text-left transition-all duration-300 ease-in-out hover:bg-slate-50/80 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
               >
                 <div className="flex items-center gap-2.5 min-w-0 pr-2">
                   <div className={`p-1 rounded-lg ${isExpanded ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-500'}`}>

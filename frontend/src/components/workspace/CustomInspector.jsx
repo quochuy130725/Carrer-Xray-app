@@ -91,15 +91,37 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
 
   const handleAnalyze = useCallback(async (e) => {
     e.preventDefault();
-    const sanitizedText = jdText ? jdText.trim() : '';
+    // 1. Sanitize input and check for attached images
+    const sanitizedText = jdText ? jdText.trim() : "";
+    const hasImage = !!imageBase64;
+    
+    // 2. BLACKLIST: Prevent users from analyzing default UI texts
+    const blacklistedPhrases = [
+      "Kích hoạt nút", 
+      "DECODE JD", 
+      "Paste Job Description text here",
+      "skibidi",
+      "Dán nội dung Job Description"
+    ];
+    const isBlacklisted = blacklistedPhrases.some(phrase => sanitizedText.includes(phrase));
 
-    if (!sanitizedText && !imageBase64) {
-      setErrorMsg(lang === 'en' ? "⚠️ Please paste a JD or upload an image before scanning." : "⚠️ Vui lòng dán nội dung JD hoặc tải ảnh lên trước khi quét.");
+    // --- VALIDATION RULES ---
+
+    // Rule A: Completely empty (No text AND No image)
+    if (!sanitizedText && !hasImage) {
+      setErrorMsg(lang === 'en' ? "⚠️ Please paste JD text or upload an image." : "⚠️ Vui lòng dán văn bản JD hoặc tải ảnh lên.");
       return;
     }
 
-    if (sanitizedText && sanitizedText.length < 80 && !imageBase64) {
-      setErrorMsg(lang === 'en' ? "⚠️ Text is too short. A real Job Description usually contains more than 80 characters. Please provide full context." : "⚠️ Nội dung quá ngắn. Một tin tuyển dụng thực tế thường dài hơn 80 ký tự. Vui lòng nhập JD đầy đủ.");
+    // Rule B: Has text, but it's a blacklisted/dummy UI text
+    if (isBlacklisted && !hasImage) {
+      setErrorMsg(lang === 'en' ? "⚠️ Invalid input. Please paste a real Job Description." : "⚠️ Nội dung không hợp lệ. Vui lòng nhập JD tuyển dụng thực tế.");
+      return;
+    }
+
+    // Rule C: Has text ONLY (no image), but text is too short
+    if (!hasImage && sanitizedText.length < 50) {
+      setErrorMsg(lang === 'en' ? "⚠️ Text is too short to be a valid job post (min 50 chars)." : "⚠️ Văn bản quá ngắn. Một tin tuyển dụng thực tế phải có ít nhất 50 ký tự.");
       return;
     }
 
@@ -157,7 +179,7 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
             onChange={(e) => setJdText(e.target.value)}
             onPaste={handlePaste}
             placeholder={lang === 'en' ? 'Paste Job Description text here, or paste/drop an image (Ctrl+V)...' : 'Dán nội dung Job Description vào đây, hoặc dán/kéo thả ảnh (Ctrl+V)...'}
-            className="w-full p-3.5 bg-white/90 border border-indigo-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all font-sans leading-relaxed shadow-sm"
+            className="w-full p-3.5 bg-white/90 border border-indigo-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/30 focus:border-indigo-500 focus:bg-white transition-all duration-300 font-sans leading-relaxed shadow-sm"
           ></textarea>
         </div>
 
@@ -206,7 +228,7 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={analyzing}
-              className="px-4 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-200 transition-all flex items-center gap-1.5 disabled:opacity-50 border border-slate-200"
+              className="px-4 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl transition-all duration-300 ease-in-out hover:bg-slate-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 flex items-center gap-1.5 disabled:opacity-50 border border-slate-200"
             >
               <Paperclip className="w-4 h-4" />
               <span>{lang === 'en' ? 'Attach Image' : 'Đính kèm ảnh'}</span>
@@ -215,7 +237,7 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
             <button
               type="submit"
               disabled={analyzing}
-              className="px-5 py-2 bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-bold rounded-xl shadow-md shadow-indigo-200 hover:shadow-lg hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-1.5 disabled:opacity-50 hover:ring-4 hover:ring-indigo-500/20"
+              className="px-5 py-2 bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-bold rounded-xl shadow-md shadow-indigo-200 hover:shadow-lg active:shadow-md transition-all duration-300 ease-in-out hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-1.5 disabled:opacity-50 hover:ring-4 hover:ring-indigo-500/20"
             >
               {analyzing ? (
                 <>
