@@ -125,6 +125,25 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
       return;
     }
 
+    // Rule D: HR Domain Context Check (Only if text is provided and long enough)
+    if (sanitizedText.length >= 50) {
+      const hrKeywords = [
+        "tuyển", "công việc", "lương", "salary", "yêu cầu", "requirement",
+        "kinh nghiệm", "experience", "vị trí", "nhân viên", "job", "mô tả", 
+        "phúc lợi", "benefit", "ứng viên", "candidate", "làm việc"
+      ];
+      
+      const normalizedText = sanitizedText.toLowerCase();
+      const hasHRContext = hrKeywords.some(keyword => normalizedText.includes(keyword));
+      
+      if (!hasHRContext) {
+        setErrorMsg(lang === 'en' 
+          ? "⚠️ This text does not appear to be a Job Description. Please upload relevant recruitment content." 
+          : "⚠️ Nội dung này không giống một tin tuyển dụng (không chứa các từ khóa nhân sự cơ bản). Vui lòng kiểm tra lại.");
+        return; // Stop analysis
+      }
+    }
+
     setErrorMsg('');
     setAnalyzing(true);
 
@@ -142,6 +161,23 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
       const data = await res.json();
 
       if (data && data.success && data.data) {
+        // --- Rule E: HR Context Check FOR IMAGE OCR ---
+        const extractedText = data.data.jdText_vi || data.data.jdText_en || '';
+        if (imageBase64 && extractedText.length >= 50) {
+          const hrKeywords = [
+            "tuyển", "công việc", "lương", "salary", "yêu cầu", "requirement",
+            "kinh nghiệm", "experience", "vị trí", "nhân viên", "job", "mô tả", 
+            "phúc lợi", "benefit", "ứng viên", "candidate", "làm việc"
+          ];
+          const hasHRContext = hrKeywords.some(keyword => extractedText.toLowerCase().includes(keyword));
+          if (!hasHRContext) {
+            setErrorMsg(lang === 'en' 
+              ? "⚠️ The uploaded image does not appear to be a Job Description. Please upload relevant recruitment content." 
+              : "⚠️ Hình ảnh tải lên không giống một tin tuyển dụng (không chứa từ khóa nhân sự). Vui lòng kiểm tra lại.");
+            return;
+          }
+        }
+        
         onAnalyzeSuccess(data.data);
       } else {
         setErrorMsg(data.message || (lang === 'en' ? 'Analysis failed.' : 'Phân tích thất bại.'));
