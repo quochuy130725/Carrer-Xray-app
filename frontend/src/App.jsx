@@ -301,7 +301,7 @@ export default function App() {
           </div>
 
           {/* Center Main Feed: CONDITIONAL RENDERING BASED ON viewMode */}
-          <div className="lg:col-span-6 min-w-0 space-y-6">
+          <div className="lg:col-span-6 min-w-0 space-y-6 relative z-[100]">
             <AnimatePresence mode="wait">
               {viewMode === 'CUSTOM_INPUT' ? (
                 /* Mode 1: Custom Inspector Standalone Input Form ONLY */
@@ -375,7 +375,7 @@ export default function App() {
           </div>
 
           {/* Right Side: Educational MIL Panel & Widgets */}
-          <div className="lg:col-span-3 min-w-[260px] space-y-6 sticky top-20 h-max">
+          <div className="lg:col-span-3 min-w-[260px] space-y-6 sticky top-20 h-max max-lg:z-0 lg:z-10">
             <MilCard
               isTriggered={viewMode === 'VIEW' ? true : isDecoding}
               currentJobId={viewMode === 'VIEW' ? selectedJobId : 'custom'}
