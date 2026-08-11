@@ -127,8 +127,8 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
   }, [jdText, imageBase64, mimeType, lang, onAnalyzeSuccess, t]);
 
   return (
-    <SpotlightCard className="bg-gradient-to-br from-indigo-50/90 via-sky-50/50 to-indigo-100/30 border-indigo-200/70 rounded-2xl p-6 shadow-sm relative overflow-hidden">
-      <div className="flex items-center justify-between mt-2">
+    <SpotlightCard className="bg-white z-50 border-indigo-200/70 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2 mt-2">
         <div className="flex items-center gap-2 text-indigo-600 font-bold text-lg font-display tracking-tight">
           <span>{t.customInspectorTitle}</span>
         </div>
