@@ -370,25 +370,32 @@ export default function App() {
                     </>
                   ) : (
                     /* The fallback Empty State when currentJob is null! */
-                    <div className="flex flex-col items-center justify-center p-16 text-center bg-white/60 backdrop-blur-md rounded-3xl border border-dashed border-indigo-200/80 shadow-sm shadow-indigo-100/50">
-                      <div className="w-20 h-20 mb-6 bg-indigo-50 rounded-2xl flex items-center justify-center shadow-inner border border-indigo-100">
-                        <svg className="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
+                    <div className="flex flex-col items-center justify-center h-full min-h-[500px] bg-white rounded-3xl border border-dashed border-slate-300 text-center p-8 shadow-sm">
+                      {/* 1. 3D Floating Image instead of flat SVG */}
+                      <div className="relative mb-6">
+                        <div className="absolute inset-0 bg-indigo-200 blur-2xl rounded-full opacity-50 animate-pulse"></div>
+                        <img 
+                          src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Magnifying%20Glass%20Tilted%20Right.png" 
+                          alt="3D Scanner" 
+                          className="relative w-28 h-28 drop-shadow-2xl animate-[bounce_3s_ease-in-out_infinite]"
+                        />
                       </div>
-                      <h3 className="text-xl font-bold text-slate-800 mb-2 font-display">
-                        {lang === 'en' ? 'Select a Case Study' : 'Chọn một Case Study'}
+
+                      <h3 className="text-xl font-extrabold text-slate-800 mb-2.5">
+                        {lang === 'en' ? 'System Ready' : 'Hệ thống đã sẵn sàng'}
                       </h3>
-                      <p className="text-slate-500 max-w-md text-sm leading-relaxed mb-6">
+                      <p className="text-[15px] text-slate-500 max-w-md leading-relaxed mb-6">
                         {lang === 'en' 
-                          ? 'Choose a documented recruitment scam from the sidebar to view detailed analysis, or use the Custom JD Inspector to scan a new post.' 
-                          : 'Vui lòng chọn một ví dụ lừa đảo từ danh sách bên trái để xem phân tích chi tiết, hoặc dùng công cụ Custom Inspector để quét tin tuyển dụng mới.'}
+                          ? 'Please select a case study from the left sidebar or use the Custom Inspector to scan a new job posting.' 
+                          : 'Hãy chọn một bài đăng từ danh sách bên trái để xem phân tích, hoặc dùng công cụ Custom Inspector để quét tin tuyển dụng mới.'}
                       </p>
+
+                      {/* 2. Fixed CTA Button */}
                       <button 
                         onClick={handleOpenCustomInspector}
-                        className="px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-md hover:bg-indigo-700 hover:-translate-y-0.5 transition-all duration-300"
+                        className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-full shadow-lg hover:shadow-indigo-500/40 transition-all duration-300 hover:-translate-y-1 active:translate-y-0"
                       >
-                        {t.navCustomAudit}
+                        ✨ {lang === 'en' ? 'Start Scanning' : 'Bắt đầu quét JD ngay'}
                       </button>
                     </div>
                   )}
