@@ -6,7 +6,7 @@ import { SpotlightCard } from '../ui/SpotlightCard.jsx';
 
 const Sidebar = ({ cases = [], selectedJobId, onSelectJob, onOpenCustomInspector, viewMode = 'VIEW', isCustomResult = false, lang = 'en' }) => {
   const t = translations[lang] || translations.en;
-  const [expandedCaseIds, setExpandedCaseIds] = useState(['case-1', 'case-2', 'case-3', 'case-4', 'case-5']);
+  const [expandedCaseIds, setExpandedCaseIds] = useState([]);
 
   const toggleExpandCase = (caseId) => {
     setExpandedCaseIds((prev) =>
