@@ -23,19 +23,21 @@ export default function App() {
 
   // View Mode State: 'VIEW' (Main Feed Decoder) | 'CUSTOM_INPUT' (Standalone Inspector Form)
   const [viewMode, setViewMode] = useState('VIEW');
-  const inspectorRef = useRef(null);
+  const [selectedJobId, setSelectedJobId] = useState('job-001');
+  const centerColumnRef = useRef(null);
 
+  // Lắng nghe sự thay đổi của viewMode hoặc selectedJobId để auto-scroll trên Mobile
   useEffect(() => {
-    if (viewMode === 'CUSTOM_INPUT') {
-      const timer = setTimeout(() => {
-        inspectorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [viewMode]);
+    const timer = setTimeout(() => {
+      if (centerColumnRef.current && window.innerWidth < 1024) { // Chỉ cuộn trên màn hình nhỏ
+        const y = centerColumnRef.current.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [viewMode, selectedJobId]);
 
   const [caseCategories, setCaseCategories] = useState([]);
-  const [selectedJobId, setSelectedJobId] = useState('job-001');
   const [jobData, setJobData] = useState(null);
   const [isDecoding, setIsDecoding] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
@@ -311,12 +313,11 @@ export default function App() {
           </div>
 
           {/* Center Main Feed: CONDITIONAL RENDERING BASED ON viewMode */}
-          <div className="lg:col-span-6 min-w-0 space-y-6 relative z-[100]">
+          <div ref={centerColumnRef} className="lg:col-span-6 min-w-0 space-y-6 relative z-[100]">
             <AnimatePresence mode="wait">
               {viewMode === 'CUSTOM_INPUT' ? (
                 /* Mode 1: Custom Inspector Standalone Input Form ONLY */
                 <motion.div 
-                  ref={inspectorRef}
                   key="custom-input"
                   initial={{ opacity: 0, y: 15, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
