@@ -36,7 +36,7 @@ const sortFlagsByPriority = (flags) =>
 // Smart Dual-Data Fallback: nếu MongoDB data thiếu trường _vi/_en → dùng local jobs.json mới nhất
 exports.getCases = async (req, res, next) => {
   try {
-    const dbCases = await Job.find({}).lean();
+    const dbCases = await Job.find({}).sort({ caseId: 1 }).lean();
     if (dbCases && dbCases.length > 0) {
       // Kiểm tra xem data MongoDB đã có Dual-Data structure chưa
       const firstJob = dbCases[0]?.jobs?.[0];

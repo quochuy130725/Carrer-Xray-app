@@ -97,9 +97,9 @@ export default function App() {
     return flatList;
   }, [caseCategories]);
 
-  // Active job item calculation with dynamic fallback
   const activeFallbackJob = useMemo(() => {
-    return allJobsFlat.find((j) => j.id === selectedJobId || j.jobId === selectedJobId) || allJobsFlat[0];
+    if (!selectedJobId) return null;
+    return allJobsFlat.find((j) => j.id === selectedJobId || j.jobId === selectedJobId) || null;
   }, [selectedJobId, allJobsFlat]);
 
   // Cache cho các bài đăng case studies đã tải
