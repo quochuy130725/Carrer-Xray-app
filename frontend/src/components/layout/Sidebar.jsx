@@ -16,6 +16,14 @@ const Sidebar = ({ cases = [], selectedJobId, onSelectJob, onOpenCustomInspector
 
   const totalPosts = cases.reduce((acc, c) => acc + (c.jobs?.length || 0), 0);
 
+  const sortedCases = [...cases].sort((a, b) => {
+    const titleA = a.caseTitle_en || a.caseTitle || a.caseId || "";
+    const titleB = b.caseTitle_en || b.caseTitle || b.caseId || "";
+    const numA = parseInt(titleA.match(/case\s*#?-?(\d+)/i)?.[1] || "0", 10);
+    const numB = parseInt(titleB.match(/case\s*#?-?(\d+)/i)?.[1] || "0", 10);
+    return numA - numB;
+  });
+
   return (
     <SpotlightCard className="bg-slate-200/40 border-slate-300/60 rounded-2xl p-4 shadow-xs flex flex-col h-[calc(100vh-100px)]">
       {/* 🚀 High-End Vector Custom JD Inspector Button */}
@@ -54,8 +62,8 @@ const Sidebar = ({ cases = [], selectedJobId, onSelectJob, onOpenCustomInspector
       </div>
 
       {/* Case Categories Accordion List */}
-      <div className="space-y-2">
-        {cases.map((cat) => {
+      <div className="space-y-2 flex-1 overflow-y-auto pr-2 custom-scrollbar hide-scrollbar">
+        {sortedCases.map((cat) => {
           const isExpanded = expandedCaseIds.includes(cat.caseId);
           // Không bôi đỏ Case nào khi đang hiển thị Custom JD result
           const hasActiveJob = !isCustomResult && viewMode === 'VIEW' && cat.jobs?.some((j) => j.id === selectedJobId);
