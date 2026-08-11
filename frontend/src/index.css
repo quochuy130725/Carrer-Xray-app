@@ -87,6 +87,15 @@
         100% { top: 100%; opacity: 0; }
     }
 
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+    }
+    
+    .animate-float {
+        animation: float 3.5s ease-in-out infinite;
+    }
+
     @keyframes loading {
         0% { width: 0%; }
         30% { width: 40%; }

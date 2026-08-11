@@ -246,7 +246,7 @@ export default function App() {
             </span>
             <h1 className="text-5xl sm:text-7xl font-bebas tracking-wide uppercase text-slate-900 flex flex-wrap items-center gap-x-3 leading-tight">
               <span>UNPACK THE</span>
-              <span className="relative inline-flex items-center overflow-hidden h-[1.1em] px-2 text-indigo-600 text-stroke-indigo">
+              <span className="relative inline-flex items-center overflow-hidden h-[1.1em] px-2 pb-1">
                 <AnimatePresence mode="wait">
                   <motion.span
                     key={keywords[keywordIndex]}
@@ -254,7 +254,7 @@ export default function App() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -30, opacity: 0 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="inline-block will-change-transform transform-gpu"
+                    className="inline-block will-change-transform transform-gpu bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-500 text-transparent bg-clip-text"
                   >
                     {keywords[keywordIndex]}
                   </motion.span>
@@ -310,7 +310,7 @@ export default function App() {
             <AnimatePresence mode="wait">
               {viewMode === 'CUSTOM_INPUT' ? (
                 /* Mode 1: Custom Inspector Standalone Input Form ONLY */
-                <motion.div 
+                <motion.div
                   key="custom-input"
                   initial={{ opacity: 0, y: 15, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -325,7 +325,7 @@ export default function App() {
                 </motion.div>
               ) : (
                 /* Mode 2: Decoded Job View & Comments ONLY */
-                <motion.div 
+                <motion.div
                   key={`view-mode-${selectedJobId}`}
                   initial={{ opacity: 0, y: 15, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -348,7 +348,7 @@ export default function App() {
                           lang={lang}
                         />
                       </div>
-  
+
                       {/* Detailed Decode View Breakdown */}
                       <ErrorBoundary>
                         <div key={`decode-${currentJob.id}`} className="animate-slideUpFade" style={{ animationDelay: '0.1s' }}>
@@ -359,7 +359,7 @@ export default function App() {
                           />
                         </div>
                       </ErrorBoundary>
-  
+
                       {/* Comment List with Botnet Seeding X-Ray */}
                       <CommentList
                         comments={currentJob?.comments || []}
@@ -372,12 +372,13 @@ export default function App() {
                     /* The fallback Empty State when currentJob is null! */
                     <div className="flex flex-col items-center justify-center h-full min-h-[500px] bg-white rounded-3xl border border-dashed border-slate-300 text-center p-8 shadow-sm">
                       {/* 1. 3D Floating Image instead of flat SVG */}
-                      <div className="relative mb-6">
-                        <div className="absolute inset-0 bg-indigo-200 blur-2xl rounded-full opacity-50 animate-pulse"></div>
-                        <img 
-                          src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Magnifying%20Glass%20Tilted%20Right.png" 
-                          alt="3D Scanner" 
-                          className="relative w-28 h-28 drop-shadow-2xl animate-[bounce_3s_ease-in-out_infinite]"
+                      <div className="relative mb-6 flex justify-center items-center">
+                        {/* Soft background glow without flickering */}
+                        <div className="absolute w-24 h-24 bg-indigo-500/10 blur-2xl rounded-full"></div>
+                        <img
+                          src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Magnifying%20Glass%20Tilted%20Right.png"
+                          alt="3D Scanner"
+                          className="relative w-28 h-28 drop-shadow-xl animate-float"
                         />
                       </div>
 
@@ -385,13 +386,13 @@ export default function App() {
                         {lang === 'en' ? 'System Ready' : 'Hệ thống đã sẵn sàng'}
                       </h3>
                       <p className="text-[15px] text-slate-500 max-w-md leading-relaxed mb-6">
-                        {lang === 'en' 
-                          ? 'Please select a case study from the left sidebar or use the Custom Inspector to scan a new job posting.' 
+                        {lang === 'en'
+                          ? 'Please select a case study from the left sidebar or use the Custom Inspector to scan a new job posting.'
                           : 'Hãy chọn một bài đăng từ danh sách bên trái để xem phân tích, hoặc dùng công cụ Custom Inspector để quét tin tuyển dụng mới.'}
                       </p>
 
                       {/* 2. Fixed CTA Button */}
-                      <button 
+                      <button
                         onClick={handleOpenCustomInspector}
                         className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-full shadow-lg hover:shadow-indigo-500/40 transition-all duration-300 hover:-translate-y-1 active:translate-y-0"
                       >
@@ -413,7 +414,7 @@ export default function App() {
             />
 
             {/* Quick Verification Rules Widget */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}

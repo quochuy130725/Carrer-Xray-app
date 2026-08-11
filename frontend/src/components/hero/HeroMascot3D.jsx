@@ -4,14 +4,14 @@ import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from
 const HeroMascot3D = () => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  
+
   const rotateX = useSpring(useTransform(y, [-150, 150], [12, -12]));
   const rotateY = useSpring(useTransform(x, [-150, 150], [-12, 12]));
-  
+
   const [isHovered, setIsHovered] = useState(false);
   const [clickPulses, setClickPulses] = useState([]);
   const [particles, setParticles] = useState([]);
-  
+
   const timeoutsRef = useRef([]);
 
   useEffect(() => {
@@ -49,10 +49,10 @@ const HeroMascot3D = () => {
     }, 2000);
     timeoutsRef.current.push(particleTimer);
   }, []);
-  
+
   return (
     <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 pointer-events-auto hidden lg:block w-[450px] h-[450px] overflow-visible p-6 sm:p-8">
-      <motion.div 
+      <motion.div
         onMouseMove={handleMouse}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => { x.set(0); y.set(0); setIsHovered(false); }}
@@ -85,11 +85,11 @@ const HeroMascot3D = () => {
             <motion.div
               key={p.id}
               initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
-              animate={{ 
-                opacity: 0, 
-                scale: 1.2, 
-                x: Math.cos(p.angle) * p.distance, 
-                y: Math.sin(p.angle) * p.distance - 40 
+              animate={{
+                opacity: 0,
+                scale: 1.2,
+                x: Math.cos(p.angle) * p.distance,
+                y: Math.sin(p.angle) * p.distance - 40
               }}
               transition={{ duration: 1.5, ease: "easeOut" }}
               className="absolute bg-white/90 backdrop-blur-sm border border-slate-200 px-3 py-1.5 rounded-full shadow-lg text-[10px] font-bold text-slate-700 pointer-events-none will-change-transform transform-gpu"
@@ -101,7 +101,7 @@ const HeroMascot3D = () => {
         </AnimatePresence>
 
         {/* Floating Badges / Emitters */}
-        <motion.div 
+        <motion.div
           initial={{ y: 0 }}
           animate={{ y: [-5, 5, -5] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -112,7 +112,7 @@ const HeroMascot3D = () => {
           <span className="text-xs font-bold text-slate-800">Real-Time X-Ray</span>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ y: 0 }}
           animate={{ y: [5, -5, 5] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
@@ -123,7 +123,7 @@ const HeroMascot3D = () => {
           <span className="text-xs font-extrabold text-white">MIL STANDARD</span>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ y: 0, rotate: 0 }}
           animate={{ y: [-8, 8, -8], rotate: [-2, 2, -2] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -135,7 +135,7 @@ const HeroMascot3D = () => {
         </motion.div>
 
         {/* Core Mascot Avatar */}
-        <motion.div 
+        <motion.div
           animate={isHovered ? { scale: 1.05, rotate: [-3, 3, -3] } : { scale: 1, rotate: 0 }}
           transition={{ type: "spring", stiffness: 300, rotate: { repeat: isHovered ? Infinity : 0, duration: 2, ease: "easeInOut" } }}
           className="w-56 h-64 rounded-[40px] glass-3d-shine border border-white/60 shadow-2xl relative overflow-hidden flex flex-col items-center justify-center animate-float-3d will-change-transform transform-gpu"
@@ -154,7 +154,7 @@ const HeroMascot3D = () => {
                 <div className={`w-2 h-2 rounded-full animate-pulse transition-colors ${isHovered ? 'bg-white' : 'bg-cyan-300'}`} />
               </div>
             </div>
-            
+
             {/* Mascot Body Details */}
             <div className="w-32 h-6 bg-slate-100/50 rounded-full backdrop-blur-sm border border-white/50 flex items-center justify-around px-4">
               <div className="w-1.5 h-1.5 rounded-full bg-rose-400" />

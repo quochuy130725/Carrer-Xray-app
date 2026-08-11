@@ -99,11 +99,17 @@ export default {
         slideUpFade: {
           '0%': { opacity: '0', transform: 'translateY(8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-12px)' },
         }
       },
       animation: {
         'scan-beam': 'scanBeam 2.5s ease-in-out infinite',
-        'slideUpFade': 'slideUpFade 0.3s ease-out forwards'
+        'slideUpFade': 'slideUpFade 0.3s ease-out forwards',
+        'float': 'float 3.5s ease-in-out infinite',
+        'float-3d': 'float 4s ease-in-out infinite'
       }
     },
   },
