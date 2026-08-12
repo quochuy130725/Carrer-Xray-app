@@ -73,7 +73,7 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
   const handleDrop = useCallback((e) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const file = e.dataTransfer.files[0];
       processImageFile(file);
@@ -94,11 +94,11 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
     // 1. Sanitize input and check for attached images
     const sanitizedText = jdText ? jdText.trim() : "";
     const hasImage = !!imageBase64;
-    
+
     // 2. BLACKLIST: Prevent users from analyzing default UI texts
     const blacklistedPhrases = [
-      "Kích hoạt nút", 
-      "DECODE JD", 
+      "Kích hoạt nút",
+      "DECODE JD",
       "Paste Job Description text here",
       "skibidi",
       "Dán nội dung Job Description"
@@ -129,16 +129,16 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
     if (sanitizedText.length >= 50) {
       const hrKeywords = [
         "tuyển", "công việc", "lương", "salary", "yêu cầu", "requirement",
-        "kinh nghiệm", "experience", "vị trí", "nhân viên", "job", "mô tả", 
+        "kinh nghiệm", "experience", "vị trí", "nhân viên", "job", "mô tả",
         "phúc lợi", "benefit", "ứng viên", "candidate", "làm việc"
       ];
-      
+
       const normalizedText = sanitizedText.toLowerCase();
       const hasHRContext = hrKeywords.some(keyword => normalizedText.includes(keyword));
-      
+
       if (!hasHRContext) {
-        setErrorMsg(lang === 'en' 
-          ? "⚠️ This text does not appear to be a Job Description. Please upload relevant recruitment content." 
+        setErrorMsg(lang === 'en'
+          ? "⚠️ This text does not appear to be a Job Description. Please upload relevant recruitment content."
           : "⚠️ Nội dung này không giống một tin tuyển dụng (không chứa các từ khóa nhân sự cơ bản). Vui lòng kiểm tra lại.");
         return; // Stop analysis
       }
@@ -161,23 +161,6 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
       const data = await res.json();
 
       if (data && data.success && data.data) {
-        // --- Rule E: HR Context Check FOR IMAGE OCR ---
-        const extractedText = data.data.jdText_vi || data.data.jdText_en || '';
-        if (imageBase64 && extractedText.length >= 50) {
-          const hrKeywords = [
-            "tuyển", "công việc", "lương", "salary", "yêu cầu", "requirement",
-            "kinh nghiệm", "experience", "vị trí", "nhân viên", "job", "mô tả", 
-            "phúc lợi", "benefit", "ứng viên", "candidate", "làm việc"
-          ];
-          const hasHRContext = hrKeywords.some(keyword => extractedText.toLowerCase().includes(keyword));
-          if (!hasHRContext) {
-            setErrorMsg(lang === 'en' 
-              ? "⚠️ The uploaded image does not appear to be a Job Description. Please upload relevant recruitment content." 
-              : "⚠️ Hình ảnh tải lên không giống một tin tuyển dụng (không chứa từ khóa nhân sự). Vui lòng kiểm tra lại.");
-            return;
-          }
-        }
-        
         onAnalyzeSuccess(data.data);
       } else {
         setErrorMsg(data.message || (lang === 'en' ? 'Analysis failed.' : 'Phân tích thất bại.'));
@@ -203,7 +186,7 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
       </div>
 
       <form onSubmit={handleAnalyze} className="space-y-3 mt-4">
-        <div 
+        <div
           className={`relative rounded-xl border-2 transition-all ${isDragging ? 'border-indigo-500 bg-indigo-50/50' : 'border-transparent'}`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
