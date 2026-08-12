@@ -49,7 +49,6 @@
         left: 0; right: 0; height: 2px;
         background: linear-gradient(90deg, transparent, #6366F1, transparent);
         box-shadow: 0 0 12px #6366F1;
-        animation: scanBeam 1.5s ease-in-out infinite;
     }
     
     .font-bebas { font-family: 'Bebas Neue', sans-serif; }
