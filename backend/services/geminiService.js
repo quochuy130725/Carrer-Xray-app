@@ -21,7 +21,8 @@ CRITICAL CALIBRATION FOR RISK LEVELS:
 * SAFE: Clear, professional, standard terms.
 
 CRITICAL RULE FOR BILINGUAL OUTPUT: You must analyze the job description or image ONCE to determine the true \`riskLevel\` and identify any logical traps. Then, you MUST output the EXACT SAME findings. DO NOT provide different assessments for different languages. Generate a SINGLE array of \`redFlags\`, where each flag contains translations inside its object (\`reason_vi\` and \`reason_en\`).
-CRITICAL: \`phrase_vi\` MUST be an exact substring from \`jdText_vi\`, and \`phrase_en\` MUST be an exact substring from \`jdText_en\`. Neither can be empty or null. If a flag is detected, both \`phrase_vi\` and \`phrase_en\` MUST be present. For \`marketBenchmark\`, you must formulate ONE unified logical assessment. Then, output the EXACT same meaning translated into \`text_vi\` and \`text_en\`. Do not omit details in one language.`;
+CRITICAL: \`phrase_vi\` MUST be an exact substring from \`jdText_vi\`, and \`phrase_en\` MUST be an exact substring from \`jdText_en\`. Neither can be empty or null. If a flag is detected, both \`phrase_vi\` and \`phrase_en\` MUST be present. For \`marketBenchmark\`, you must formulate ONE unified logical assessment. Then, output the EXACT same meaning translated into \`text_vi\` and \`text_en\`. Do not omit details in one language.
+CRITICAL FOR NON-HR CONTENT: If the input is NOT a job description or recruitment post (e.g., random code, selfies, software UI, conversational chatter), you MUST set \`isJobDescription\` to false, and \`jdText_vi\` and \`jdText_en\` should contain purely the extracted text from the image without any added conversational filler.`;
 
 
   const promptText = `${systemInstruction}\n\nJOB DESCRIPTION TEXT TO INSPECT:\n"${jdText || '(Text content not provided, please extract and analyze from the attached image)'}"`;
@@ -53,6 +54,10 @@ CRITICAL: \`phrase_vi\` MUST be an exact substring from \`jdText_vi\`, and \`phr
             type: Type.STRING,
             description: 'Extracted readable text from image or original text, in English (translated if original is Vietnamese)'
           },
+          isJobDescription: {
+            type: Type.BOOLEAN,
+            description: 'True if the content appears to be a job description or recruitment post, false if it is unrelated (e.g., random images, software code, selfies).'
+          },
           riskLevel: {
             type: Type.STRING,
             description: 'Severity level: HIGH, MEDIUM, or SAFE'
@@ -81,7 +86,7 @@ CRITICAL: \`phrase_vi\` MUST be an exact substring from \`jdText_vi\`, and \`phr
             }
           }
         },
-        required: ['jdText_vi', 'jdText_en', 'riskLevel', 'marketBenchmark', 'redFlags']
+        required: ['jdText_vi', 'jdText_en', 'isJobDescription', 'riskLevel', 'marketBenchmark', 'redFlags']
       }
     }
   });
