@@ -106,7 +106,7 @@ export default {
         }
       },
       animation: {
-        'scan-beam': 'scanBeam 2.5s ease-in-out infinite',
+        'scan-beam': 'scanBeam 2.5s ease-in-out 1 forwards',
         'slideUpFade': 'slideUpFade 0.3s ease-out forwards',
         'float': 'float 3.5s ease-in-out infinite',
         'float-3d': 'float 4s ease-in-out infinite'
