@@ -58,7 +58,14 @@ When **CAREER X-RAY** transitions to a live production environment, the platform
 
 ## 🛠️ Tech Stack Specification & Recent Architectural Upgrades
 
-### Recent Upgrades (v1.3)
+### Recent Upgrades (v1.4)
+- **Multimodal OCR Pipeline:** Integrated Drag & Drop / `Ctrl+V` Image upload with Base64 injection to Gemini 2.5 for robust screenshot analysis.
+- **Non-HR Content Firewall:** Added strict `isJobDescription` schema evaluation in AI Prompts to instantly reject irrelevant images (selfies, memes, raw code).
+- **Phishing Typo Detection:** Explicitly instructed AI to hunt for typos/misspellings in professional domains (e.g., `talent-accquisition`) as early indicators of impersonation.
+- **UX Reset Button:** Implemented a "Scan Another JD" soft pill button inside the Custom Results view for instantaneous component state resets without reloading.
+- **CSS Animation Optimization:** Refactored scan-beam animations from infinite looping to `forwards` execution to ensure graceful termination post-scan.
+
+### Upgrades (v1.3)
 - **Modular Frontend Architecture:** Reorganized `src/components/` into scalable subdirectories (`layout/`, `hero/`, `workspace/`, `mil/`, `ui/`).
 - **Plainthing Studio Button Aesthetic:** Primary CTA buttons redesigned to Solid Dark Pill containers with integrated SVG icon badges — zero emojis, zero AI gradients.
 - **Bilingual i18n (EN/VI):** Full bilingual support dynamically switching via `[ EN | VI ]` toggle with zero layout jumps, powered by `translations.js`.

@@ -17,7 +17,7 @@
 ## 3. Advanced Cinematic Motion & 3D Interactive Hooks
 - **Mouse Spotlight Cards (`ui/SpotlightCard.jsx`):** A wrapper component applied to all major interface panels. It calculates exact cursor coordinates `(x, y)` and emits a glowing `radial-gradient(rgba(99, 102, 241, 0.12))` that seamlessly follows the user's mouse along the borders.
 - **3D Mascot Bot (`hero/HeroMascot3D.jsx`):** The top-right Hero Banner features an interactive 3D Scanner Bot Mascot. Utilizing `framer-motion`'s `useSpring` and `useMotionValue`, it recalculates `rotateX` and `rotateY` dynamically based on mouse movement. Click emits a particle burst + radar wave effect.
-- **Laser Sweep Scan Effect (`workspace/JobCard.jsx`):** Triggers a high-intensity 1.5s vertical sweeping laser (`.animate-scan-beam` with `#6366F1` box-shadow glow) during active job analysis.
+- **Laser Sweep Scan Effect (`workspace/JobCard.jsx`):** Triggers a high-intensity 2.5s vertical sweeping laser (`.animate-scan-beam` with `#6366F1` box-shadow glow) during active job analysis. The animation executes exactly once (`1 forwards`) and elegantly disappears to prevent infinite looping distraction.
 - **Spring Physics Flag Badges:** Detected anomaly flags (red/yellow badges) progressively pop out behind the laser sweep using strict spring physics (`type: "spring", stiffness: 260, damping: 20`).
 - **Tab & Case Study Transitions:** Case studies switch seamlessly using `<AnimatePresence mode="wait">` fading in and sliding via a 3D tilt scale.
 
@@ -40,6 +40,7 @@
 - **Card Frame (Spotlight):** Warm paper tint `bg-[#FAF9F5] border-slate-200/80 rounded-2xl p-6 shadow-sm`.
 - **Inner Scrollable Box:** Text container `max-h-[500px] overflow-y-auto bg-white border border-slate-200 rounded-xl p-4`.
 - **DECODE JD Button:** Solid pill — `px-5 py-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-[11px]`. Toggles to `bg-slate-900` when active.
+- **Scan Another JD Button (Custom Results):** Soft pill reset button — `px-4 py-2 text-[15px] bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-full font-bold` positioned elegantly above the Custom Result card with a left-sliding arrow hover effect.
 
 ### Diagnostic Report (`workspace/DecodeView.jsx`)
 - **High Risk Alert (RED):** `bg-rose-50/90 border border-rose-200 text-rose-950 rounded-2xl p-6`. Pulsing status dot: `w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping inline-block mr-2`.

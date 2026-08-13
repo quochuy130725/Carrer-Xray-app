@@ -132,7 +132,15 @@ Critical keys for AI assistants to know:
 
 ---
 
-## 8. RECENT ARCHITECTURAL UPGRADES (v1.3)
+## 8. RECENT ARCHITECTURAL UPGRADES (v1.3 & v1.4)
+### v1.4 Upgrades
+* **Multimodal OCR AI Pipeline:** `CustomInspector` now supports drag-and-drop / Ctrl+V Image base64 injection for Gemini 2.5 OCR extraction.
+* **Non-HR Content Firewall:** Enforced `isJobDescription` boolean schema rule in AI Prompt to automatically reject random selfies, code blocks, or irrelevant images.
+* **Phishing Typo Detection:** Explicitly instructed AI to flag typos in professional email addresses (e.g. `talent-accquisition`) to combat impersonation scams.
+* **Animation Optimization:** Tailwind CSS `.animate-scan-beam` updated to `1 forwards` (no infinite looping) and overriding hardcoded CSS removed for a clean scan finish.
+* **UX Reset Button:** Added a "Scan Another JD" soft pill button in `App.jsx` when viewing Custom Results for instantaneous component state reset.
+
+### v1.3 Upgrades
 * **Modular Frontend Architecture:** `src/components/` restructured into `layout/`, `hero/`, `workspace/`, `mil/`, `ui/` subdirectories.
 * **Plainthing Studio Buttons:** CTA buttons redesigned as Solid Dark Pill containers with inline SVG vector badges — no system emojis or AI gradients.
 * **Bilingual Yellow Flag Micro-Copy:** Yellow (medium risk) flags now display constructive verification steps instead of alarming scam language.
