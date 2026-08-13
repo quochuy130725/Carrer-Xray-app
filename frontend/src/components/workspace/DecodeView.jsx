@@ -87,8 +87,11 @@ const DecodeView = ({ job, isDecoding, lang = 'en' }) => {
     const defaultFallback = lang === 'en' ? "Employer" : "Nhà tuyển dụng";
     if (!job) return defaultFallback;
     
-    // Directly fallback through available clean fields
-    return job.companyName || job.company || job.title || job.jobTitle || defaultFallback;
+    const name = lang === 'en'
+      ? (job.company_en || job.company || job.companyName)
+      : (job.company || job.companyName || job.company_en);
+      
+    return name || defaultFallback;
   }, [job, lang]);
 
   // Extract the actual job title, ignoring system generated UI labels
@@ -98,7 +101,10 @@ const DecodeView = ({ job, isDecoding, lang = 'en' }) => {
     
     const ignoreRegex = /JD X-RAY|System Auto-Scan|AI Image Scan|Kết Quả Quét/i;
     
-    let extractedTitle = job.title || job.jobTitle;
+    let extractedTitle = lang === 'en'
+      ? (job.title_en || job.title || job.jobTitle)
+      : (job.title || job.jobTitle || job.title_en);
+      
     if (extractedTitle && !ignoreRegex.test(extractedTitle)) {
       // Optional: truncate if title is too long
       return extractedTitle.length > 40 ? extractedTitle.substring(0, 40) + "..." : extractedTitle;
