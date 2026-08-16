@@ -161,6 +161,17 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
       const data = await res.json();
 
       if (data && data.success && data.data) {
+        // --- Rule F: Handle Explicit Non-HR Rejection Flag from Gemini ---
+        if (data.data.isJobDescription === false) {
+          setErrorMsg(
+            lang === 'en'
+              ? "⚠️ AI determined that this content is NOT a valid Job Description or Recruitment post. Please upload HR-related content."
+              : "⚠️ AI xác định nội dung này không phải là một bài đăng Tuyển dụng hợp lệ. Hệ thống từ chối phân tích."
+          );
+          setAnalyzing(false);
+          return;
+        }
+        
         onAnalyzeSuccess(data.data);
       } else {
         setErrorMsg(data.message || (lang === 'en' ? 'Analysis failed.' : 'Phân tích thất bại.'));

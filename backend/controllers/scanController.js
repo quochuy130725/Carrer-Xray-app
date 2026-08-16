@@ -120,6 +120,7 @@ exports.analyzeCustomJD = async (req, res, next) => {
     let jdText_vi = '';
     let jdText_en = '';
     let riskLevel = 'SAFE';
+    let isJobDescription = true;
 
     // 1. Nếu có hình ảnh, BẮT BUỘC dùng Gemini vì Regex không đọc được ảnh
     if (imageBase64) {
@@ -132,6 +133,10 @@ exports.analyzeCustomJD = async (req, res, next) => {
           }
 
           const aiResult = await analyzeJDWithGemini(jdText, lang, compressed.base64, compressed.mimeType);
+
+          if (aiResult.isJobDescription !== undefined) {
+            isJobDescription = aiResult.isJobDescription;
+          }
 
           const rawFlags = sortFlagsByPriority(aiResult.redFlags || []);
           redFlags_vi = rawFlags.map(flag => ({
@@ -152,18 +157,18 @@ exports.analyzeCustomJD = async (req, res, next) => {
 
           // Tước quyền AI: chấm risk theo keyword bẫy nghiêm trọng
           const severeScamKeywords = [
-            'GÕ TRUYỆN', 'GÕ VĂN BẢN', 'TIỂU THUYẾT', 'CÀNH/TRANG', '35K-100K', 
-            'INBOX LIỀN TAY', 'INBOX ZALO', 'TELEGRAM', 'NẠP TIỀN', 'CỌC', 
+            'GÕ TRUYỆN', 'GÕ VĂN BẢN', 'TIỂU THUYẾT', 'CÀNH/TRANG', '35K-100K',
+            'INBOX LIỀN TAY', 'INBOX ZALO', 'TELEGRAM', 'NẠP TIỀN', 'CỌC',
             'NHẬP LIỆU AT HOME', 'NHIỆM VỤ', 'CHIẾN DỊCH'
           ];
-        
+
           riskLevel = "SAFE";
           if (rawFlags && rawFlags.length > 0) {
             const isSevere = rawFlags.some(flag => {
               const textToSearch = `${flag.phrase_vi} ${flag.phrase_en} ${flag.reason_vi} ${flag.reason_en} ${flag.category_vi} ${flag.category_en}`.toUpperCase();
               return severeScamKeywords.some(kw => textToSearch.includes(kw));
             });
-            
+
             riskLevel = isSevere ? "HIGH" : "MEDIUM";
           }
 
@@ -207,6 +212,10 @@ exports.analyzeCustomJD = async (req, res, next) => {
         // 3. Nếu Regex không bắt được lỗi và chưa từng gọi Gemini -> Dùng Gemini quét ngữ nghĩa text
         try {
           const aiResult = await analyzeJDWithGemini(jdText, lang);
+
+          if (aiResult.isJobDescription !== undefined) {
+            isJobDescription = aiResult.isJobDescription;
+          }
 
           const rawFlags = sortFlagsByPriority(aiResult.redFlags || []);
           redFlags_vi = rawFlags.map(flag => ({
@@ -291,6 +300,7 @@ exports.analyzeCustomJD = async (req, res, next) => {
         jdText_vi: jdText_vi || jdText || '',
         jdText_en: jdText_en || jdText || '',
         hasImage: isImageScan,
+        isJobDescription,
         redFlags,
         redFlags_vi,
         redFlags_en,
