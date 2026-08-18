@@ -171,7 +171,7 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
           setAnalyzing(false);
           return;
         }
-        
+
         onAnalyzeSuccess(data.data);
       } else {
         setErrorMsg(data.message || (lang === 'en' ? 'Analysis failed.' : 'Phân tích thất bại.'));
@@ -216,7 +216,7 @@ const CustomInspector = ({ lang = 'en', onAnalyzeSuccess }) => {
         {/* EN Disclaimer Note */}
         {lang === 'en' && (
           <p className="text-[10px] text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2 font-medium">
-            * Note: Custom Analysis Engine is optimized for the Vietnamese job market. For best results, paste Vietnamese JD text.
+            * Note: Engine supports bilingual analysis (EN | VI) with deep context optimization for emerging market scams.
           </p>
         )}
 
